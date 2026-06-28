@@ -1,0 +1,23 @@
+{
+  "id": "com.harborclient.plugins.load-test",
+  "name": "Load Tester",
+  "author": "HarborClient",
+  "version": "1.0.0",
+  "engines": { "harborclient": ">=1.8.4" },
+  "renderer": "dist/renderer.js",
+  "permissions": ["ui", "database", "filesystem:pick"],
+  "contributes": {
+    "requestTabs": [{ "id": "load-tester", "title": "Load Tester" }],
+    "responseTabs": [{ "id": "load-testing", "title": "Load Testing" }],
+    "statusBarItems": [{ "id": "modal-host", "title": "Load Test Modal Host" }],
+    "commands": [{ "id": "load-test.collection", "title": "Load Test Collection" }],
+    "contextMenus": [
+      {
+        "id": "load-test",
+        "title": "Load Test",
+        "command": "load-test.collection",
+        "when": ["collection", "folder"]
+      }
+    ]
+  }
+}

@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 1280px;
+      height: 720px;
+      min-height: 720px;
+      max-height: 720px;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family:
+        -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: #0c1220;
+      background-image:
+        radial-gradient(ellipse 70% 60% at 85% 10%, rgba(56, 189, 248, 0.2) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 50% at 10% 85%, rgba(99, 102, 241, 0.16) 0%, transparent 50%),
+        radial-gradient(ellipse 40% 30% at 50% 50%, rgba(16, 185, 129, 0.06) 0%, transparent 60%),
+        linear-gradient(160deg, #0c1220 0%, #111827 45%, #0a0f1a 100%);
+      background-repeat: no-repeat;
+      background-size: 1280px 720px;
+      color: #e5e7eb;
+    }
+
+    .canvas {
+      position: fixed;
+      inset: 0;
+      width: 1280px;
+      height: 720px;
+      background: transparent;
+    }
+
+    .grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+    }
+
+    .header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      padding: 32px 48px 20px;
+    }
+
+    .mockup-area {
+      position: absolute;
+      top: 172px;
+      left: 0;
+      width: 1280px;
+      height: 548px;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .plugin-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #7dd3fc;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .plugin-badge .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #38bdf8;
+      box-shadow: 0 0 8px #38bdf8;
+    }
+
+    .pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #94a3b8;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    h1 {
+      font-size: 38px;
+      font-weight: 700;
+      line-height: 1.1;
+      color: #f8fafc;
+      letter-spacing: -0.02em;
+    }
+
+    h1 span {
+      background: linear-gradient(90deg, #38bdf8, #818cf8, #34d399);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      margin-top: 10px;
+      font-size: 16px;
+      color: #64748b;
+      line-height: 1.45;
+      max-width: 620px;
+    }
+
+    .mockup-glow {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 4px;
+      bottom: 0;
+      border-radius: 16px 16px 0 0;
+      background: linear-gradient(135deg,
+          rgba(56, 189, 248, 0.22),
+          rgba(129, 140, 248, 0.14),
+          rgba(52, 211, 153, 0.1));
+      filter: blur(24px);
+      opacity: 0.85;
+    }
+
+    .mockup {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1280px;
+      height: 548px;
+      border-radius: 12px 12px 0 0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: none;
+      background: #1a1f2e;
+      box-shadow:
+        0 -8px 32px rgba(0, 0, 0, 0.35),
+        0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mockup-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: #141824;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      flex-shrink: 0;
+    }
+
+    .traffic {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+    }
+
+    .traffic.r {
+      background: #ff5f57;
+    }
+
+    .traffic.y {
+      background: #febc2e;
+    }
+
+    .traffic.g {
+      background: #28c840;
+    }
+
+    .toolbar-title {
+      margin-left: 10px;
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .plugin-panel {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      gap: 14px;
+      overflow: hidden;
+    }
+
+    .export-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .field-label {
+      font-size: 14px;
+      color: #9ca3af;
+    }
+
+    .form-select {
+      appearance: none;
+      border-radius: 6px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      background: #232936;
+      color: #e5e7eb;
+      font-size: 14px;
+      padding: 6px 28px 6px 8px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239ca3af' d='M3 4.5 6 7.5 9 4.5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+    }
+
+    .btn-secondary {
+      border-radius: 6px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      background: #232936;
+      color: #e5e7eb;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 6px 12px;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .stat-card {
+      border-radius: 6px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      background: #232936;
+      padding: 6px 12px;
+    }
+
+    .stat-card-label {
+      font-size: 14px;
+      color: #9ca3af;
+    }
+
+    .stat-card-value {
+      font-size: 16px;
+      font-weight: 500;
+      color: #e5e7eb;
+      margin-top: 2px;
+    }
+
+    .chart-section {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: #e5e7eb;
+    }
+
+    .chart-frame {
+      position: relative;
+      width: 100%;
+      height: 118px;
+    }
+
+    .chart-frame-sm {
+      height: 100px;
+    }
+
+    .chart-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      flex-shrink: 0;
+    }
+
+    .chart-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .chart-legend {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 4px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      color: #e5e7eb;
+    }
+
+    .legend-swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+    }
+
+    .toast {
+      position: absolute;
+      top: 36px;
+      right: 56px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 9px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(52, 211, 153, 0.4);
+      box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.45),
+        0 0 20px rgba(52, 211, 153, 0.12);
+      z-index: 4;
+    }
+
+    .toast-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(52, 211, 153, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #34d399;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .toast-text {
+      font-size: 12px;
+      color: #e2e8f0;
+      font-weight: 500;
+    }
+  </style>
+</head>
+
+<body>
+  <!--
+    Customize this template for your plugin marketing screenshot (1280×720).
+
+    Editable regions:
+    - .plugin-badge          Category label (default: "HarborClient Plugin")
+    - .badge-row .pill       Feature highlight pills (add/remove as needed)
+    - h1 / h1 span           Headline; gradient accent is on the <span>
+    - .subtitle              One-line description
+    - .toolbar-title          Mock HarborClient window title
+    - .plugin-panel           Main UI preview (Load Testing response tab)
+    - .toast / .toast-text    Optional success banner (delete .toast to hide)
+  -->
+  <div class="canvas">
+    <div class="grid"></div>
+
+    <div class="header">
+      <div class="badge-row">
+        <div class="plugin-badge"><span class="dot"></span> HarborClient Plugin</div>
+        <span class="pill">Latency charts</span>
+        <span class="pill">Throughput</span>
+        <span class="pill">Collection runs</span>
+      </div>
+      <h1>Run load tests — <span>see latency &amp; throughput</span></h1>
+      <p class="subtitle">
+        Fire repeated requests against the current endpoint and inspect latency percentiles,
+        throughput, and error rate in the Load Testing response tab.
+      </p>
+    </div>
+
+    <div class="mockup-area">
+      <div class="mockup-glow"></div>
+      <div class="mockup">
+        <div class="mockup-toolbar">
+          <span class="traffic r"></span>
+          <span class="traffic y"></span>
+          <span class="traffic g"></span>
+          <span class="toolbar-title">HarborClient — GET https://api.example.com/users — Response</span>
+        </div>
+        <div class="plugin-panel">
+          <div class="export-row">
+            <div class="field-group">
+              <label class="field-label" for="format-select">Format</label>
+              <select id="format-select" class="form-select">
+                <option selected>JSON</option>
+                <option>CSV</option>
+              </select>
+            </div>
+            <button type="button" class="btn-secondary">Export</button>
+          </div>
+
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="stat-card-label">Total requests</div>
+              <div class="stat-card-value">100</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-label">Successful</div>
+              <div class="stat-card-value">98</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-label">Errors</div>
+              <div class="stat-card-value">2</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-label">Throughput</div>
+              <div class="stat-card-value">45.23 req/s</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-label">Run duration</div>
+              <div class="stat-card-value">2210 ms</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-label">Avg latency</div>
+              <div class="stat-card-value">42.3 ms</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-label">p95 latency</div>
+              <div class="stat-card-value">68.1 ms</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-label">Max latency</div>
+              <div class="stat-card-value">112.5 ms</div>
+            </div>
+          </div>
+
+          <section class="chart-section">
+            <h4 class="section-title">Latency over time</h4>
+            <div class="chart-frame">
+              <svg class="chart-svg" viewBox="0 0 1248 150" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="lineFill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.35" />
+                    <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.02" />
+                  </linearGradient>
+                </defs>
+                <g stroke="rgba(148,163,184,0.25)" stroke-width="1">
+                  <line x1="48" y1="20" x2="48" y2="120" />
+                  <line x1="48" y1="120" x2="1220" y2="120" />
+                  <line x1="48" y1="45" x2="1220" y2="45" />
+                  <line x1="48" y1="70" x2="1220" y2="70" />
+                  <line x1="48" y1="95" x2="1220" y2="95" />
+                </g>
+                <text x="634" y="142" fill="#9ca3af" font-size="12" text-anchor="middle">
+                  Request #
+                </text>
+                <text x="14" y="72" fill="#9ca3af" font-size="12" text-anchor="middle" transform="rotate(-90 14 72)">
+                  Milliseconds
+                </text>
+                <path
+                  d="M 48 95 L 109 88 L 170 92 L 231 78 L 292 85 L 353 72 L 414 80 L 475 68 L 536 74 L 597 62 L 658 70 L 719 58 L 780 65 L 841 55 L 902 60 L 963 52 L 1024 58 L 1085 48 L 1146 54 L 1207 50 L 1220 52 L 1220 120 L 48 120 Z"
+                  fill="url(#lineFill)" />
+                <polyline fill="none" stroke="#3b82f6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"
+                  points="48,95 109,88 170,92 231,78 292,85 353,72 414,80 475,68 536,74 597,62 658,70 719,58 780,65 841,55 902,60 963,52 1024,58 1085,48 1146,54 1207,50" />
+              </svg>
+            </div>
+          </section>
+
+          <div class="chart-row">
+            <section class="chart-section">
+              <h4 class="section-title">Latency percentiles</h4>
+              <div class="chart-frame chart-frame-sm">
+                <svg class="chart-svg" viewBox="0 0 580 120" preserveAspectRatio="none">
+                  <g stroke="rgba(148,163,184,0.25)" stroke-width="1">
+                    <line x1="36" y1="12" x2="36" y2="96" />
+                    <line x1="36" y1="96" x2="560" y2="96" />
+                  </g>
+                  <g fill="#3b82f6">
+                    <rect x="52" y="72" width="36" height="24" rx="2" />
+                    <rect x="108" y="58" width="36" height="38" rx="2" />
+                    <rect x="164" y="56" width="36" height="40" rx="2" />
+                    <rect x="220" y="44" width="36" height="52" rx="2" />
+                    <rect x="276" y="34" width="36" height="62" rx="2" />
+                    <rect x="332" y="24" width="36" height="72" rx="2" />
+                    <rect x="388" y="8" width="36" height="88" rx="2" />
+                  </g>
+                  <g fill="#9ca3af" font-size="11" text-anchor="middle">
+                    <text x="70" y="110">Min</text>
+                    <text x="126" y="110">Avg</text>
+                    <text x="182" y="110">p50</text>
+                    <text x="238" y="110">p90</text>
+                    <text x="294" y="110">p95</text>
+                    <text x="350" y="110">p99</text>
+                    <text x="406" y="110">Max</text>
+                  </g>
+                </svg>
+              </div>
+            </section>
+
+            <section class="chart-section">
+              <h4 class="section-title">Status distribution</h4>
+              <div class="chart-frame chart-frame-sm">
+                <svg class="chart-svg" viewBox="0 0 580 120" preserveAspectRatio="xMidYMid meet">
+                  <circle cx="290" cy="58" r="42" fill="none" stroke="#ef4444" stroke-width="14" />
+                  <circle cx="290" cy="58" r="42" fill="none" stroke="#3b82f6" stroke-width="14"
+                    stroke-dasharray="258 6" transform="rotate(-90 290 58)" />
+                </svg>
+                <div class="chart-legend">
+                  <div class="legend-item">
+                    <span class="legend-swatch" style="background: #3b82f6"></span>
+                    200 (98)
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-swatch" style="background: #ef4444"></span>
+                    500 (2)
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast">
+      <div class="toast-icon">✓</div>
+      <span class="toast-text">Load test results exported</span>
+    </div>
+  </div>
+</body>
+
+</html>
