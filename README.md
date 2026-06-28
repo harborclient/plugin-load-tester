@@ -2,6 +2,9 @@
 
 HarborClient plugin that drives repeated HTTP requests against the active request or an entire collection/folder and charts latency, throughput, and error rate.
 
+![Screenshot](screenshot.png)
+
+
 ## Features
 
 - **Load Tester** request tab — configure total requests, concurrency, timeout, delay, and keep-alive preference, then run a load test for the open request.
