@@ -1,4 +1,4 @@
-// node_modules/.pnpm/@harborclient+sdk@0.5.0_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search@_1ce3235504e871aa5dbe742de87ddfcd/node_modules/@harborclient/sdk/dist/runtime/reactHost.js
+// node_modules/.pnpm/@harborclient+sdk@0.6.14_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search_47d90e3f55246fd089138cc6a136d024/node_modules/@harborclient/sdk/dist/runtime/reactHost.js
 var hostReact = null;
 function setHostReact(react) {
   hostReact = react;
@@ -12,15 +12,15 @@ function requireHostReact() {
   return hostReact;
 }
 
-// node_modules/.pnpm/@harborclient+sdk@0.5.0_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search@_1ce3235504e871aa5dbe742de87ddfcd/node_modules/@harborclient/sdk/dist/runtime/index.js
+// node_modules/.pnpm/@harborclient+sdk@0.6.14_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search_47d90e3f55246fd089138cc6a136d024/node_modules/@harborclient/sdk/dist/runtime/index.js
 function installReact(react) {
   setHostReact(react);
 }
 
 // src/db.ts
 var SCHEMA_VERSION = 1;
-async function initDatabase(hc) {
-  await hc.database.exec(`
+async function initDatabase(hc2) {
+  await hc2.database.exec(`
     CREATE TABLE IF NOT EXISTS schema_meta (
       key TEXT PRIMARY KEY,
       value INTEGER NOT NULL
@@ -45,19 +45,19 @@ async function initDatabase(hc) {
       FOREIGN KEY (run_id) REFERENCES runs(id) ON DELETE CASCADE
     );
   `);
-  const row = await hc.database.get(
+  const row = await hc2.database.get(
     "SELECT value FROM schema_meta WHERE key = ?",
     ["version"]
   );
   if (!row) {
-    await hc.database.run("INSERT INTO schema_meta (key, value) VALUES (?, ?)", [
+    await hc2.database.run("INSERT INTO schema_meta (key, value) VALUES (?, ?)", [
       "version",
       SCHEMA_VERSION
     ]);
   }
 }
 
-// node_modules/.pnpm/@harborclient+sdk@0.5.0_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search@_1ce3235504e871aa5dbe742de87ddfcd/node_modules/@harborclient/sdk/dist/runtime/react.js
+// node_modules/.pnpm/@harborclient+sdk@0.6.14_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search_47d90e3f55246fd089138cc6a136d024/node_modules/@harborclient/sdk/dist/runtime/react.js
 function hook(name) {
   const react = requireHostReact();
   const fn = react[name];
@@ -123,7 +123,7 @@ function useCollectionModalState() {
   return useSyncExternalStore(subscribeModal, getModalSnapshot, getModalSnapshot);
 }
 
-// node_modules/.pnpm/@harborclient+sdk@0.5.0_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search@_1ce3235504e871aa5dbe742de87ddfcd/node_modules/@harborclient/sdk/dist/runtime/jsx-runtime.js
+// node_modules/.pnpm/@harborclient+sdk@0.6.14_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search_47d90e3f55246fd089138cc6a136d024/node_modules/@harborclient/sdk/dist/runtime/jsx-runtime.js
 var Fragment = Symbol.for("@harborclient/sdk.Fragment");
 function build(type, props, key) {
   const react = requireHostReact();
@@ -137,22 +137,22 @@ function build(type, props, key) {
 var jsx = build;
 var jsxs = build;
 
-// node_modules/.pnpm/@harborclient+sdk@0.5.0_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search@_1ce3235504e871aa5dbe742de87ddfcd/node_modules/@harborclient/sdk/dist/components/Button/index.js
+// node_modules/.pnpm/@harborclient+sdk@0.6.14_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search_47d90e3f55246fd089138cc6a136d024/node_modules/@harborclient/sdk/dist/components/Button/index.js
 var VARIANT_CLASSES = {
-  primary: "cursor-pointer rounded-md border border-transparent bg-accent px-3 py-1 text-[15px] font-medium text-white shadow-sm hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50 app-no-drag",
-  secondary: "cursor-pointer rounded-md border border-separator bg-control px-3 py-1 text-[15px] text-text shadow-sm hover:bg-selection disabled:cursor-not-allowed disabled:opacity-50 app-no-drag",
-  primaryDanger: "cursor-pointer rounded-md border border-transparent bg-danger px-3 py-1 text-[15px] font-medium text-white shadow-sm hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50 app-no-drag",
-  secondaryDanger: "cursor-pointer rounded-md border border-separator bg-control px-3 py-1 text-[15px] text-danger shadow-sm hover:bg-danger/15 disabled:cursor-not-allowed disabled:opacity-50 app-no-drag",
-  toolbar: "cursor-pointer rounded-md border-none bg-transparent px-2 py-1 text-[15px] hover:bg-selection app-no-drag",
-  icon: "inline-flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-md border-none bg-transparent text-muted opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100 focus:opacity-100 focus-visible:opacity-100 hover:bg-selection hover:text-text app-no-drag",
-  iconDanger: "inline-flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-md border-none bg-transparent text-muted opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100 focus:opacity-100 focus-visible:opacity-100 hover:bg-danger/15 hover:text-danger app-no-drag"
+  primary: "inline-flex min-h-[34px] cursor-pointer items-center justify-center rounded-md border border-transparent bg-accent px-3 py-1 text-[15px] font-medium text-white shadow-sm hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50 app-no-drag",
+  secondary: "inline-flex min-h-[34px] cursor-pointer items-center justify-center rounded-md border border-separator bg-control px-3 py-1 text-[15px] text-text shadow-sm hover:bg-selection disabled:cursor-not-allowed disabled:opacity-50 app-no-drag",
+  primaryDanger: "inline-flex min-h-[34px] cursor-pointer items-center justify-center rounded-md border border-transparent bg-danger px-3 py-1 text-[15px] font-medium text-white shadow-sm hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50 app-no-drag",
+  secondaryDanger: "inline-flex min-h-[34px] cursor-pointer items-center justify-center rounded-md border border-separator bg-control px-3 py-1 text-[15px] text-danger shadow-sm hover:bg-danger/15 disabled:cursor-not-allowed disabled:opacity-50 app-no-drag",
+  toolbar: "inline-flex min-h-[34px] cursor-pointer items-center rounded-md border-none bg-transparent px-2 py-1 text-[15px] hover:bg-selection app-no-drag",
+  icon: "inline-flex size-[30px] shrink-0 cursor-pointer items-center justify-center rounded-md border-none bg-transparent text-muted hover:bg-selection hover:text-text app-no-drag",
+  iconDanger: "inline-flex size-[30px] shrink-0 cursor-pointer items-center justify-center rounded-md border-none bg-transparent text-muted hover:bg-danger/15 hover:text-danger app-no-drag"
 };
-function Button({ variant = "primary", className, type = "button", ...props }) {
+function Button({ variant = "primary", className, type = "button", innerRef, ...props }) {
   const classes = className ? `${VARIANT_CLASSES[variant]} ${className}` : VARIANT_CLASSES[variant];
-  return jsx("button", { type, className: classes, ...props });
+  return jsx("button", { ref: innerRef, type, className: classes, ...props });
 }
 
-// node_modules/.pnpm/@harborclient+sdk@0.5.0_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search@_1ce3235504e871aa5dbe742de87ddfcd/node_modules/@harborclient/sdk/dist/components/FieldError/index.js
+// node_modules/.pnpm/@harborclient+sdk@0.6.14_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search_47d90e3f55246fd089138cc6a136d024/node_modules/@harborclient/sdk/dist/components/FieldError/index.js
 function spacingClasses(spacing) {
   switch (spacing) {
     case "section":
@@ -164,7 +164,7 @@ function spacingClasses(spacing) {
       return "mt-1";
   }
 }
-function FieldError({ children, id, spacing = "field", roleAlert = false, className }) {
+function FieldError({ children, id, spacing = "field", roleAlert = true, className }) {
   if (children == null || children === "")
     return null;
   const base = `${spacingClasses(spacing)} text-[14px] text-danger`;
@@ -172,7 +172,7 @@ function FieldError({ children, id, spacing = "field", roleAlert = false, classN
   return jsx("p", { id, className: classes, role: roleAlert ? "alert" : void 0, children });
 }
 
-// node_modules/.pnpm/@harborclient+sdk@0.5.0_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search@_1ce3235504e871aa5dbe742de87ddfcd/node_modules/@harborclient/sdk/dist/components/Spinner/index.js
+// node_modules/.pnpm/@harborclient+sdk@0.6.14_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search_47d90e3f55246fd089138cc6a136d024/node_modules/@harborclient/sdk/dist/components/Spinner/index.js
 function sizeClasses(size) {
   return size === "sm" ? "h-3 w-3" : "h-4 w-4";
 }
@@ -4026,7 +4026,7 @@ var FontAwesomeIcon = React2.forwardRef((props, ref) => {
 FontAwesomeIcon.displayName = "FontAwesomeIcon";
 var DEFAULT_CLASSNAMES = `${LAYER_CLASSES.default} ${STYLE_CLASSES.fixedWidth}`;
 
-// node_modules/.pnpm/@harborclient+sdk@0.5.0_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search@_1ce3235504e871aa5dbe742de87ddfcd/node_modules/@harborclient/sdk/dist/components/FaIcon/index.js
+// node_modules/.pnpm/@harborclient+sdk@0.6.14_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search_47d90e3f55246fd089138cc6a136d024/node_modules/@harborclient/sdk/dist/components/FaIcon/index.js
 function FaIcon({ icon: icon3, className = "h-3.5 w-3.5", title }) {
   return createElement(FontAwesomeIcon, {
     icon: icon3,
@@ -5925,7 +5925,7 @@ var e3 = { airline: { airline: [{ name: `Aegean Airlines`, iataCode: `A3` }, { n
 // node_modules/.pnpm/@faker-js+faker@10.5.0/node_modules/@faker-js/faker/dist/locale/en.js
 var r3 = new yt({ locale: [e3, Ct] });
 
-// node_modules/.pnpm/@harborclient+sdk@0.5.0_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search@_1ce3235504e871aa5dbe742de87ddfcd/node_modules/@harborclient/sdk/dist/variables/dynamic.js
+// node_modules/.pnpm/@harborclient+sdk@0.6.14_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search_47d90e3f55246fd089138cc6a136d024/node_modules/@harborclient/sdk/dist/variables/dynamic.js
 function categoryImageUrl(category) {
   return r3.image.urlLoremFlickr({ category });
 }
@@ -6429,11 +6429,11 @@ function resolveDynamicVariable(key) {
 }
 var DYNAMIC_VARIABLE_NAMES = Object.keys(DYNAMIC_VARIABLES).sort();
 
-// node_modules/.pnpm/@harborclient+sdk@0.5.0_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search@_1ce3235504e871aa5dbe742de87ddfcd/node_modules/@harborclient/sdk/dist/variables/tokens.js
+// node_modules/.pnpm/@harborclient+sdk@0.6.14_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search_47d90e3f55246fd089138cc6a136d024/node_modules/@harborclient/sdk/dist/variables/tokens.js
 var VARIABLE_NAME_CHARS = "\\w$.-";
 var VARIABLE_TOKEN_PATTERN = new RegExp(`\\{\\{\\s*([${VARIABLE_NAME_CHARS}]+)\\s*\\}\\}`, "g");
 
-// node_modules/.pnpm/@harborclient+sdk@0.5.0_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search@_1ce3235504e871aa5dbe742de87ddfcd/node_modules/@harborclient/sdk/dist/components/EmptyState/index.js
+// node_modules/.pnpm/@harborclient+sdk@0.6.14_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search_47d90e3f55246fd089138cc6a136d024/node_modules/@harborclient/sdk/dist/components/EmptyState/index.js
 function variantClasses(variant) {
   if (variant === "centered") {
     return "flex flex-1 items-center justify-center p-4 text-center text-[14px] text-muted";
@@ -6446,7 +6446,7 @@ function EmptyState({ children, variant = "inline", className }) {
   return jsx("div", { className: classes, children });
 }
 
-// node_modules/.pnpm/@harborclient+sdk@0.5.0_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search@_1ce3235504e871aa5dbe742de87ddfcd/node_modules/@harborclient/sdk/dist/components/forms/classes.js
+// node_modules/.pnpm/@harborclient+sdk@0.6.14_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search_47d90e3f55246fd089138cc6a136d024/node_modules/@harborclient/sdk/dist/components/forms/classes.js
 var field = "rounded-md border border-separator bg-field px-2 py-1 text-[15px] text-text app-no-drag";
 var surfaceField = "w-full rounded-md border border-separator bg-field px-3 py-2 text-[14px] text-text";
 var VARIANT_CLASSES2 = {
@@ -6464,13 +6464,75 @@ function mergeFieldClasses(variant, className) {
   return void 0;
 }
 
-// node_modules/.pnpm/@harborclient+sdk@0.5.0_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search@_1ce3235504e871aa5dbe742de87ddfcd/node_modules/@harborclient/sdk/dist/components/forms/Input.js
+// node_modules/.pnpm/@harborclient+sdk@0.6.14_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search_47d90e3f55246fd089138cc6a136d024/node_modules/@harborclient/sdk/dist/components/forms/Input.js
 function Input({ ref, variant = "control", type, className, ...props }) {
   const resolvedVariant = type === "checkbox" || type === "radio" ? "plain" : variant;
   return jsx("input", { ref, type, className: mergeFieldClasses(resolvedVariant, className), ...props });
 }
 
-// node_modules/.pnpm/@harborclient+sdk@0.5.0_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search@_1ce3235504e871aa5dbe742de87ddfcd/node_modules/@harborclient/sdk/dist/components/FormGroup/index.js
+// node_modules/.pnpm/@harborclient+sdk@0.6.14_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search_47d90e3f55246fd089138cc6a136d024/node_modules/@harborclient/sdk/dist/components/enhanceControl.js
+var REACT_FRAGMENT_TYPE = Symbol.for("react.fragment");
+var FORM_CONTROL_TAGS = /* @__PURE__ */ new Set(["button", "input", "select", "textarea"]);
+function getSingleChild(node) {
+  if (node == null || typeof node === "boolean")
+    return void 0;
+  if (Array.isArray(node)) {
+    const filtered = node.filter((n3) => n3 != null && n3 !== false);
+    return filtered.length === 1 ? filtered[0] : void 0;
+  }
+  return node;
+}
+function applyAriaProps(child, options) {
+  const { describedBy, invalid, id } = options;
+  const props = {};
+  if (id && child.props.id == null) {
+    props.id = id;
+  }
+  if (describedBy) {
+    const existing = typeof child.props["aria-describedby"] === "string" ? child.props["aria-describedby"] : void 0;
+    props["aria-describedby"] = existing ? `${existing} ${describedBy}` : describedBy;
+  }
+  if (invalid) {
+    props["aria-invalid"] = true;
+  }
+  if (Object.keys(props).length === 0)
+    return child;
+  return cloneElement(child, props);
+}
+function enhanceControl(child, options) {
+  const { describedBy, invalid, id } = options;
+  if (!describedBy && !invalid && !id)
+    return child;
+  const single = getSingleChild(child);
+  if (single !== void 0 && single !== child) {
+    return enhanceControl(single, options);
+  }
+  if (!isValidElement(child))
+    return child;
+  if (child.type === REACT_FRAGMENT_TYPE) {
+    const inner = getSingleChild(child.props.children);
+    if (inner && isValidElement(inner)) {
+      return cloneElement(child, {}, enhanceControl(inner, options));
+    }
+    return child;
+  }
+  if (typeof child.type === "string") {
+    if (FORM_CONTROL_TAGS.has(child.type)) {
+      return applyAriaProps(child, options);
+    }
+    const inner = getSingleChild(child.props.children);
+    if (inner && isValidElement(inner)) {
+      const enhanced = enhanceControl(inner, options);
+      if (enhanced !== inner) {
+        return cloneElement(child, {}, enhanced);
+      }
+    }
+    return child;
+  }
+  return applyAriaProps(child, options);
+}
+
+// node_modules/.pnpm/@harborclient+sdk@0.6.14_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search_47d90e3f55246fd089138cc6a136d024/node_modules/@harborclient/sdk/dist/components/FormGroup/index.js
 function labelClasses(tone, srOnly, inline) {
   const base = "text-[14px]";
   const visibility = srOnly ? "sr-only" : "";
@@ -6481,18 +6543,9 @@ function labelClasses(tone, srOnly, inline) {
   const color2 = tone === "muted" ? "text-muted" : "font-medium text-text";
   return `${base} ${color2} ${visibility}`.trim();
 }
-function enhanceControl(child, describedBy) {
-  if (!describedBy || !isValidElement(child)) {
-    return child;
-  }
-  const existingDescribedBy = typeof child.props["aria-describedby"] === "string" ? child.props["aria-describedby"] : void 0;
-  const mergedDescribedBy = existingDescribedBy ? `${existingDescribedBy} ${describedBy}` : describedBy;
-  return cloneElement(child, {
-    "aria-invalid": true,
-    "aria-describedby": mergedDescribedBy
-  });
-}
-function FormGroup({ label, children, htmlFor, description, error, errorId, layout = "stacked", labelTone = "default", srOnly = false, className, labelClassName }) {
+function FormGroup({ label, children, htmlFor, description, error, errorId, descriptionId, layout = "stacked", labelTone = "default", srOnly = false, className, labelClassName }) {
+  const generatedId = useId();
+  const controlId = htmlFor ?? generatedId;
   const extra = className ?? "";
   if (layout === "associated") {
     const associatedClasses = labelClassName ?? "text-[14px] text-text";
@@ -6501,28 +6554,73 @@ function FormGroup({ label, children, htmlFor, description, error, errorId, layo
   if (layout === "checkboxAdjacent") {
     const wrapperClasses2 = extra ? `flex items-start gap-2 ${extra}` : "flex items-start gap-2";
     const adjacentLabelClasses = labelClassName ?? "min-w-0 flex-1 text-[14px] text-text";
-    return jsxs("div", { className: wrapperClasses2, children: [children, jsx("label", { htmlFor, className: adjacentLabelClasses, children: label })] });
+    const linkedChildren = enhanceControl(children, { id: controlId });
+    return jsxs("div", { className: wrapperClasses2, children: [linkedChildren, jsx("label", { htmlFor: controlId, className: adjacentLabelClasses, children: label })] });
   }
   if (layout === "radio") {
     const wrapperClasses2 = extra ? `inline-flex cursor-pointer items-center gap-1.5 text-[14px] text-text app-no-drag ${extra}` : "inline-flex cursor-pointer items-center gap-1.5 text-[14px] text-text app-no-drag";
-    return jsxs("label", { htmlFor, className: wrapperClasses2, children: [children, label] });
+    const linkedChildren = enhanceControl(children, { id: controlId });
+    return jsxs("label", { htmlFor: controlId, className: wrapperClasses2, children: [linkedChildren, label] });
   }
   if (layout === "checkbox") {
     const wrapperClasses2 = extra ? `flex items-center gap-2 ${extra}` : "flex items-center gap-2";
-    return jsxs("label", { htmlFor, className: wrapperClasses2, children: [children, jsx("span", { className: labelClasses(labelTone, srOnly, false), children: label })] });
+    const linkedChildren = enhanceControl(children, { id: controlId });
+    return jsxs("label", { htmlFor: controlId, className: wrapperClasses2, children: [linkedChildren, jsx("span", { className: labelClasses(labelTone, srOnly, false), children: label })] });
   }
   if (layout === "inline") {
     const wrapperClasses2 = extra ? `flex min-w-0 flex-1 items-center gap-2 ${extra}` : "flex min-w-0 flex-1 items-center gap-2";
-    return jsxs("label", { htmlFor, className: wrapperClasses2, children: [jsx("span", { className: labelClasses(labelTone, srOnly, true), children: label }), children] });
+    const linkedChildren = enhanceControl(children, { id: controlId });
+    return jsxs("label", { htmlFor: controlId, className: wrapperClasses2, children: [jsx("span", { className: labelClasses(labelTone, srOnly, true), children: label }), linkedChildren] });
   }
+  const resolvedDescriptionId = description != null && description !== "" ? descriptionId ?? (htmlFor ? `${htmlFor}-description` : void 0) : void 0;
   const resolvedErrorId = error != null && error !== "" ? errorId ?? (htmlFor ? `${htmlFor}-error` : void 0) : void 0;
-  const control = enhanceControl(children, resolvedErrorId);
+  const describedByIds = [resolvedDescriptionId, resolvedErrorId].filter((id) => id != null);
+  const describedBy = describedByIds.length > 0 ? describedByIds.join(" ") : void 0;
+  const control = enhanceControl(children, {
+    describedBy,
+    invalid: resolvedErrorId != null,
+    id: htmlFor
+  });
   const wrapperClasses = extra ? `flex flex-col gap-1 ${extra}` : "flex flex-col gap-1";
-  return jsxs("div", { className: wrapperClasses, children: [jsxs("label", { htmlFor, className: "flex flex-col gap-1", children: [jsx("span", { className: labelClasses(labelTone, srOnly, false), children: label }), control, description != null && description !== "" ? jsx("p", { className: "m-0 text-[14px] text-muted", children: description }) : null] }), resolvedErrorId ? jsx(FieldError, { id: resolvedErrorId, spacing: "field", children: error }) : null] });
+  return jsxs("div", { className: wrapperClasses, children: [jsxs("label", { htmlFor, className: "flex flex-col gap-1", children: [jsx("span", { className: labelClasses(labelTone, srOnly, false), children: label }), control, resolvedDescriptionId ? jsx("p", { id: resolvedDescriptionId, className: "m-0 text-[14px] text-muted", children: description }) : null] }), resolvedErrorId ? jsx(FieldError, { id: resolvedErrorId, spacing: "field", children: error }) : null] });
 }
 
-// node_modules/.pnpm/@harborclient+sdk@0.5.0_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search@_1ce3235504e871aa5dbe742de87ddfcd/node_modules/@harborclient/sdk/dist/components/useDialogFocus.js
+// node_modules/.pnpm/@harborclient+sdk@0.6.14_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search_47d90e3f55246fd089138cc6a136d024/node_modules/@harborclient/sdk/dist/components/useDialogFocus.js
 var FOCUSABLE_SELECTOR = 'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+var inertLockCounts = /* @__PURE__ */ new WeakMap();
+function setInertLocked(element, locked) {
+  const count = inertLockCounts.get(element) ?? 0;
+  if (locked) {
+    inertLockCounts.set(element, count + 1);
+    element.inert = true;
+    return;
+  }
+  const next = count - 1;
+  if (next <= 0) {
+    inertLockCounts.delete(element);
+    element.inert = false;
+  } else {
+    inertLockCounts.set(element, next);
+  }
+}
+function lockOverlaySiblings(overlay) {
+  const parent = overlay.parentElement;
+  if (!parent)
+    return [];
+  const locked = [];
+  for (const child of parent.children) {
+    if (child === overlay)
+      continue;
+    setInertLocked(child, true);
+    locked.push(child);
+  }
+  return locked;
+}
+function unlockOverlaySiblings(siblings) {
+  for (const sibling of siblings) {
+    setInertLocked(sibling, false);
+  }
+}
 function getFocusableElements(container) {
   const candidates = Array.from(container.querySelectorAll(FOCUSABLE_SELECTOR));
   return candidates.filter((element) => {
@@ -6539,6 +6637,7 @@ function useDialogFocus(panelRef) {
     const panel = panelRef.current;
     if (!panel)
       return;
+    const inertedSiblings = lockOverlaySiblings(panel);
     const previousFocus = document.activeElement;
     if (!panel.contains(document.activeElement)) {
       const focusables = getFocusableElements(panel);
@@ -6573,6 +6672,7 @@ function useDialogFocus(panelRef) {
     document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
+      unlockOverlaySiblings(inertedSiblings);
       if (previousFocus instanceof HTMLElement && document.contains(previousFocus)) {
         previousFocus.focus();
       }
@@ -6580,22 +6680,23 @@ function useDialogFocus(panelRef) {
   }, [panelRef]);
 }
 
-// node_modules/.pnpm/@harborclient+sdk@0.5.0_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search@_1ce3235504e871aa5dbe742de87ddfcd/node_modules/@harborclient/sdk/dist/components/Modal/ModalHeader.js
-function ModalHeader({ titleId, title, description, headerActions, closeDisabled = false, onClose }) {
-  return jsxs("div", { className: "flex flex-wrap items-center gap-2 border-b border-separator px-4 py-4", children: [jsxs("div", { className: "min-w-0 flex-1", children: [jsx("h2", { id: titleId, className: "m-0 flex flex-wrap items-center gap-2 text-[17px] font-semibold text-text", children: title }), description ? jsx("p", { className: "m-0 mt-1 text-[14px] text-muted", children: description }) : null] }), jsxs("div", { className: "flex flex-wrap items-center gap-2", children: [headerActions, jsx(Button, { type: "button", variant: "icon", className: "shrink-0 opacity-100", "aria-label": "Close", disabled: closeDisabled, onClick: onClose, children: jsx(FaIcon, { icon: faXmark, className: "h-4 w-4" }) })] })] });
+// node_modules/.pnpm/@harborclient+sdk@0.6.14_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search_47d90e3f55246fd089138cc6a136d024/node_modules/@harborclient/sdk/dist/components/Modal/ModalHeader.js
+function ModalHeader({ titleId, title, description, descriptionId, headerActions, closeDisabled = false, onClose }) {
+  return jsxs("div", { className: "flex flex-wrap items-center gap-2 border-b border-separator px-4 py-4", children: [jsxs("div", { className: "min-w-0 flex-1", children: [jsx("h2", { id: titleId, className: "m-0 flex flex-wrap items-center gap-2 text-[17px] font-semibold text-text", children: title }), description ? jsx("p", { id: descriptionId, className: "m-0 mt-1 text-[14px] text-muted", children: description }) : null] }), jsxs("div", { className: "flex flex-wrap items-center gap-2", children: [headerActions, jsx(Button, { type: "button", variant: "icon", className: "shrink-0", "aria-label": "Close", disabled: closeDisabled, onClick: onClose, children: jsx(FaIcon, { icon: faXmark, className: "h-4 w-4" }) })] })] });
 }
 
-// node_modules/.pnpm/@harborclient+sdk@0.5.0_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search@_1ce3235504e871aa5dbe742de87ddfcd/node_modules/@harborclient/sdk/dist/components/Modal/ModalFooter.js
+// node_modules/.pnpm/@harborclient+sdk@0.6.14_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search_47d90e3f55246fd089138cc6a136d024/node_modules/@harborclient/sdk/dist/components/Modal/ModalFooter.js
 function ModalFooter({ children, spaced = false, className }) {
   const base = spaced ? "mt-4 flex justify-end gap-2" : "flex justify-end gap-2";
   const classes = className ? `${base} ${className}` : base;
   return jsx("div", { className: classes, children });
 }
 
-// node_modules/.pnpm/@harborclient+sdk@0.5.0_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search@_1ce3235504e871aa5dbe742de87ddfcd/node_modules/@harborclient/sdk/dist/components/Modal/index.js
+// node_modules/.pnpm/@harborclient+sdk@0.6.14_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search_47d90e3f55246fd089138cc6a136d024/node_modules/@harborclient/sdk/dist/components/Modal/index.js
 function Modal({ onClose, className = "w-96", overlayClassName, disableEscape = false, title, description, headerActions, closeDisabled = false, labelledBy, label, children }) {
   const panelRef = useRef(null);
-  useDialogFocus(panelRef);
+  const overlayRef = useRef(null);
+  useDialogFocus(overlayRef);
   useEffect(() => {
     if (disableEscape)
       return;
@@ -6609,10 +6710,11 @@ function Modal({ onClose, className = "w-96", overlayClassName, disableEscape = 
   }, [disableEscape, onClose]);
   const overlayClass = `fixed inset-0 flex items-center justify-center bg-black/40 ${overlayClassName ?? "z-50"}`;
   const panelClass = title ? `${className} flex max-h-[85vh] flex-col overflow-hidden rounded-lg border border-separator bg-surface shadow-xl` : `${className} rounded-lg border border-separator bg-surface p-4 shadow-xl`;
-  return jsx("div", { className: overlayClass, onClick: onClose, children: jsx("div", { ref: panelRef, role: "dialog", "aria-modal": "true", "aria-labelledby": labelledBy, "aria-label": label, className: panelClass, onClick: (event) => event.stopPropagation(), children: title && labelledBy ? jsxs(Fragment, { children: [jsx(ModalHeader, { titleId: labelledBy, title, description, headerActions, closeDisabled, onClose }), jsx("div", { className: "flex-1 overflow-y-auto p-4", children })] }) : children }) });
+  const descriptionId = description && labelledBy ? `${labelledBy}-description` : void 0;
+  return jsxs("div", { ref: overlayRef, className: overlayClass, children: [jsx("div", { ref: panelRef, role: "dialog", "aria-modal": "true", "aria-labelledby": labelledBy, "aria-describedby": descriptionId, "aria-label": label, className: `relative z-10 ${panelClass}`, onClick: (event) => event.stopPropagation(), children: title && labelledBy ? jsxs(Fragment, { children: [jsx(ModalHeader, { titleId: labelledBy, title, description, descriptionId, headerActions, closeDisabled, onClose }), jsx("div", { className: "flex-1 overflow-y-auto p-4", children })] }) : children }), jsx("button", { type: "button", tabIndex: -1, className: "absolute inset-0 z-0 cursor-default border-none bg-transparent p-0", "aria-label": "Close dialog", onClick: onClose })] });
 }
 
-// node_modules/.pnpm/@harborclient+sdk@0.5.0_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search@_1ce3235504e871aa5dbe742de87ddfcd/node_modules/@harborclient/sdk/dist/components/StatusMessage/index.js
+// node_modules/.pnpm/@harborclient+sdk@0.6.14_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search_47d90e3f55246fd089138cc6a136d024/node_modules/@harborclient/sdk/dist/components/StatusMessage/index.js
 function StatusMessage({ children, live = true, id, className }) {
   const base = "text-[14px] text-muted";
   const classes = className ? `${base} ${className}` : base;
@@ -6620,8 +6722,8 @@ function StatusMessage({ children, live = true, id, className }) {
 }
 
 // src/consoleLog.ts
-function getConsoleHost(hc) {
-  const host = hc.host;
+function getConsoleHost(hc2) {
+  const host = hc2.host;
   if (typeof host.logRequestToConsole !== "function") {
     throw new Error(
       "Load Tester requires HarborClient host console logging. Update HarborClient to the latest version."
@@ -6629,12 +6731,14 @@ function getConsoleHost(hc) {
   }
   return host;
 }
-function logLoadTestRequest(hc, payload) {
-  const host = getConsoleHost(hc);
+function logLoadTestRequest(hc2, payload) {
+  const host = getConsoleHost(hc2);
   void host.logRequestToConsole(payload);
 }
 
 // src/store.ts
+var RESULTS_STORAGE_KEY = "load-results";
+var PROGRESS_STORAGE_KEY = "load-progress";
 var DEFAULT_LOAD_TEST_CONFIG = {
   count: 10,
   concurrency: 1,
@@ -6642,12 +6746,15 @@ var DEFAULT_LOAD_TEST_CONFIG = {
   delayMs: 0,
   keepAlive: true
 };
+var hc = null;
 var defaultConfig = { ...DEFAULT_LOAD_TEST_CONFIG };
 var defaultConfigSnapshot = { ...defaultConfig };
 var resultsByKey = /* @__PURE__ */ new Map();
 var progressByKey = /* @__PURE__ */ new Map();
 var abortControllers = /* @__PURE__ */ new Map();
 var listeners2 = /* @__PURE__ */ new Set();
+var lastResultsJson = "{}";
+var lastProgressJson = "{}";
 function notify2() {
   for (const listener2 of listeners2) {
     listener2();
@@ -6656,9 +6763,118 @@ function notify2() {
 function refreshDefaultConfigSnapshot() {
   defaultConfigSnapshot = { ...defaultConfig };
 }
-async function initStore() {
+function serializeResultsRecord(source) {
+  return Object.fromEntries(source.entries());
+}
+function serializeProgressRecord(source) {
+  return Object.fromEntries(source.entries());
+}
+function applyResultsRecord(record) {
+  resultsByKey.clear();
+  for (const [key, aggregate2] of Object.entries(record)) {
+    if (isLoadAggregate(aggregate2)) {
+      resultsByKey.set(key, aggregate2);
+    }
+  }
+}
+function applyProgressRecord(record) {
+  progressByKey.clear();
+  for (const [key, progress] of Object.entries(record)) {
+    if (isLoadProgress(progress)) {
+      progressByKey.set(key, progress);
+    }
+  }
+}
+function isLoadAggregate(value) {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+  const candidate = value;
+  return typeof candidate.startedAt === "number" && typeof candidate.finishedAt === "number" && typeof candidate.total === "number" && Array.isArray(candidate.samples);
+}
+function isLoadProgress(value) {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+  const candidate = value;
+  return typeof candidate.completed === "number" && typeof candidate.total === "number" && typeof candidate.running === "boolean";
+}
+function hydrateResultsRecord(stored) {
+  if (!stored || typeof stored !== "object" || Array.isArray(stored)) {
+    return {};
+  }
+  const record = {};
+  for (const [key, value] of Object.entries(stored)) {
+    if (isLoadAggregate(value)) {
+      record[key] = value;
+    }
+  }
+  return record;
+}
+function hydrateProgressRecord(stored) {
+  if (!stored || typeof stored !== "object" || Array.isArray(stored)) {
+    return {};
+  }
+  const record = {};
+  for (const [key, value] of Object.entries(stored)) {
+    if (isLoadProgress(value)) {
+      record[key] = value;
+    }
+  }
+  return record;
+}
+function refreshStorageSnapshotCaches() {
+  lastResultsJson = JSON.stringify(serializeResultsRecord(resultsByKey));
+  lastProgressJson = JSON.stringify(serializeProgressRecord(progressByKey));
+}
+function syncFromStored(storedResults, storedProgress) {
+  const resultsRecord = hydrateResultsRecord(storedResults);
+  const progressRecord = hydrateProgressRecord(storedProgress);
+  const resultsJson = JSON.stringify(resultsRecord);
+  const progressJson = JSON.stringify(progressRecord);
+  let changed = false;
+  if (resultsJson !== lastResultsJson) {
+    applyResultsRecord(resultsRecord);
+    lastResultsJson = resultsJson;
+    changed = true;
+  }
+  if (progressJson !== lastProgressJson) {
+    applyProgressRecord(progressRecord);
+    lastProgressJson = progressJson;
+    changed = true;
+  }
+  return changed;
+}
+async function persistSnapshots() {
+  if (!hc) {
+    return;
+  }
+  await Promise.all([
+    hc.storage.set(RESULTS_STORAGE_KEY, serializeResultsRecord(resultsByKey)),
+    hc.storage.set(PROGRESS_STORAGE_KEY, serializeProgressRecord(progressByKey))
+  ]);
+}
+async function initStore(context) {
+  hc = context;
   refreshDefaultConfigSnapshot();
+  const [storedResults, storedProgress] = await Promise.all([
+    hc.storage.get(RESULTS_STORAGE_KEY),
+    hc.storage.get(PROGRESS_STORAGE_KEY)
+  ]);
+  syncFromStored(storedResults, storedProgress);
   notify2();
+}
+async function reloadFromStorage() {
+  if (!hc) {
+    return;
+  }
+  const [storedResults, storedProgress] = await Promise.all([
+    hc.storage.get(RESULTS_STORAGE_KEY),
+    hc.storage.get(PROGRESS_STORAGE_KEY)
+  ]);
+  if (syncFromStored(storedResults, storedProgress)) {
+    notify2();
+  }
 }
 function normalizeConfig(input) {
   return {
@@ -6706,11 +6922,15 @@ function setResult(key, aggregate2) {
     total: aggregate2.total,
     running: false
   });
+  refreshStorageSnapshotCaches();
   notify2();
+  void persistSnapshots();
 }
 function setProgress(key, progress) {
   progressByKey.set(key, progress);
+  refreshStorageSnapshotCaches();
   notify2();
+  void persistSnapshots();
 }
 function beginRun(key) {
   abortControllers.get(key)?.abort();
@@ -6947,6 +7167,9 @@ async function executeRequest(target, options, signal, send) {
   try {
     await waitDelay(options.delayMs, signal);
     result = await send(target, options, signal);
+    if (!result || typeof result !== "object" || typeof result.timeMs !== "number") {
+      result = errorResult("Host did not return a send result.");
+    }
   } catch (error) {
     const message = error instanceof Error ? error.name === "AbortError" ? "Request timed out or was aborted" : error.message : String(error);
     result = errorResult(message);
@@ -7006,8 +7229,8 @@ async function runLoadTest(targets, options, callbacks = {}) {
 }
 
 // src/sendViaHost.ts
-function getHttpSendHost(hc) {
-  const host = hc.host;
+function getHttpSendHost(hc2) {
+  const host = hc2.host;
   if (typeof host.sendHttpRequest !== "function") {
     throw new Error(
       "Load Tester requires HarborClient main-process HTTP sending. Update HarborClient to the latest version."
@@ -7015,8 +7238,8 @@ function getHttpSendHost(hc) {
   }
   return host;
 }
-function createHostSender(hc) {
-  const host = getHttpSendHost(hc);
+function createHostSender(hc2) {
+  const host = getHttpSendHost(hc2);
   return async (target) => {
     const headers = Object.entries(target.headers).map(([key, value]) => ({
       key,
@@ -7041,7 +7264,7 @@ function requestKey(draft) {
   return `${method} ${url}`;
 }
 
-// node_modules/.pnpm/@harborclient+sdk@0.5.0_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search@_1ce3235504e871aa5dbe742de87ddfcd/node_modules/@harborclient/sdk/dist/http/substitute.js
+// node_modules/.pnpm/@harborclient+sdk@0.6.14_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search_47d90e3f55246fd089138cc6a136d024/node_modules/@harborclient/sdk/dist/http/substitute.js
 function substituteVariables(text2, runtimeVars) {
   const pattern = new RegExp(VARIABLE_TOKEN_PATTERN.source, "g");
   return text2.replace(pattern, (match, key) => {
@@ -7072,7 +7295,7 @@ function substituteKeyValueRows(rows, runtimeVars) {
   }));
 }
 
-// node_modules/.pnpm/@harborclient+sdk@0.5.0_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search@_1ce3235504e871aa5dbe742de87ddfcd/node_modules/@harborclient/sdk/dist/http/resolveRequest.js
+// node_modules/.pnpm/@harborclient+sdk@0.6.14_@babel+runtime@8.0.0_@codemirror+lint@6.9.7_@codemirror+search_47d90e3f55246fd089138cc6a136d024/node_modules/@harborclient/sdk/dist/http/resolveRequest.js
 function hasUnsafeHeaderFieldChars(value) {
   for (let index2 = 0; index2 < value.length; index2 += 1) {
     const code = value.charCodeAt(index2);
@@ -7254,7 +7477,7 @@ function resolveSavedRequest(request, collection) {
 }
 
 // src/LoadTesterTab.tsx
-function LoadTesterTab({ context, hc }) {
+function LoadTesterTab({ context, hc: hc2 }) {
   const key = requestKey(context.draft);
   const progress = useLoadProgress(key);
   const [error, setError] = useState(null);
@@ -7267,17 +7490,17 @@ function LoadTesterTab({ context, hc }) {
       return;
     }
     const nextController = beginRun(key);
-    void hc.host.clearResponse();
+    void hc2.host.clearResponse();
     setProgress(key, { completed: 0, total: config2.count, running: true });
     try {
       const aggregate2 = await runLoadTest([target], config2, {
         signal: nextController.signal,
-        send: createHostSender(hc),
+        send: createHostSender(hc2),
         onProgress: (completed, total) => {
           setProgress(key, { completed, total, running: true });
         },
         onRequestComplete: ({ target: completedTarget, sample: sample2, result }) => {
-          logLoadTestRequest(hc, {
+          logLoadTestRequest(hc2, {
             requestName: sample2.requestName ?? completedTarget.name,
             result
           });
@@ -21100,7 +21323,7 @@ var STAT_GRID_STYLE = {
   gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
   gap: "12px"
 };
-function LoadResultsView({ result, title, hc }) {
+function LoadResultsView({ result, title, hc: hc2 }) {
   const formatSelectId = useId();
   const [format, setFormat] = useState("json");
   const [exportError, setExportError] = useState(null);
@@ -21133,21 +21356,21 @@ function LoadResultsView({ result, title, hc }) {
     () => statusLabels.map((label) => result?.statusCodes[label] ?? 0),
     [result?.statusCodes, statusLabels]
   );
-  const showExport = hc != null && (result?.samples.length ?? 0) > 0;
+  const showExport = hc2 != null && (result?.samples.length ?? 0) > 0;
   const handleExport = async () => {
-    if (!hc || !result) {
+    if (!hc2 || !result) {
       return;
     }
     setExportError(null);
     setExporting(true);
     try {
       const content = format === "json" ? serializeLoadTestJson(result) : serializeLoadTestCsv(result);
-      const savedPath = await hc.fs.saveFile(content, {
+      const savedPath = await hc2.fs.saveFile(content, {
         defaultPath: defaultExportPath(format, result.startedAt),
         filters: saveDialogFilters(format)
       });
       if (savedPath != null) {
-        hc.ui.showToast("Load test results exported");
+        hc2.ui.showToast("Load test results exported");
       }
     } catch (error) {
       setExportError(error instanceof Error ? error.message : String(error));
@@ -21227,10 +21450,24 @@ function StatCard({ label, value }) {
 }
 
 // src/ResponseLoadTab.tsx
-function ResponseLoadTab({ context, hc }) {
+function ResponseLoadTab({ context, hc: hc2 }) {
   const key = requestKey(context.draft);
   const result = useLoadResult(key);
   const progress = useLoadProgress(key);
+  useEffect(() => {
+    const reload = () => {
+      void reloadFromStorage();
+    };
+    reload();
+    window.addEventListener("focus", reload);
+    document.addEventListener("visibilitychange", reload);
+    const intervalId = window.setInterval(reload, 500);
+    return () => {
+      window.removeEventListener("focus", reload);
+      document.removeEventListener("visibilitychange", reload);
+      window.clearInterval(intervalId);
+    };
+  }, [key]);
   return /* @__PURE__ */ jsxs("div", { className: "h-full overflow-y-auto p-4", children: [
     progress?.running ? /* @__PURE__ */ jsxs("p", { className: "mb-4 text-[14px] text-muted", role: "status", "aria-live": "polite", children: [
       "Load test running: ",
@@ -21239,13 +21476,13 @@ function ResponseLoadTab({ context, hc }) {
       progress.total,
       " requests completed."
     ] }) : null,
-    /* @__PURE__ */ jsx(LoadResultsView, { result, hc })
+    /* @__PURE__ */ jsx(LoadResultsView, { result, hc: hc2 })
   ] });
 }
 
 // src/hostApi.ts
-function getLoadTestHost(hc) {
-  const host = hc.host;
+function getLoadTestHost(hc2) {
+  const host = hc2.host;
   if (typeof host.listCollectionRequests !== "function" || typeof host.getCollectionMetadata !== "function") {
     throw new Error(
       "Load Tester requires HarborClient host helpers for collection requests. Update HarborClient to the latest version."
@@ -21253,8 +21490,8 @@ function getLoadTestHost(hc) {
   }
   return host;
 }
-async function loadCollectionTargets(hc, collectionId, folderId) {
-  const host = getLoadTestHost(hc);
+async function loadCollectionTargets(hc2, collectionId, folderId) {
+  const host = getLoadTestHost(hc2);
   const [requests, collection] = await Promise.all([
     host.listCollectionRequests(collectionId, folderId),
     host.getCollectionMetadata(collectionId)
@@ -21300,7 +21537,7 @@ function CollectionModalStyles() {
   }, []);
   return null;
 }
-function CollectionLoadModal({ hc, target, onClose }) {
+function CollectionLoadModal({ hc: hc2, target, onClose }) {
   const titleId = useId();
   const [loading, setLoading] = useState(true);
   const [running, setRunning] = useState(false);
@@ -21314,7 +21551,7 @@ function CollectionLoadModal({ hc, target, onClose }) {
     let cancelled = false;
     setLoading(true);
     setError(null);
-    void loadCollectionTargets(hc, target.collectionId, target.folderId).then(({ collectionName: collectionName2, requests }) => {
+    void loadCollectionTargets(hc2, target.collectionId, target.folderId).then(({ collectionName: collectionName2, requests }) => {
       if (cancelled) {
         return;
       }
@@ -21337,14 +21574,14 @@ function CollectionLoadModal({ hc, target, onClose }) {
     return () => {
       cancelled = true;
     };
-  }, [hc, target.collectionId, target.folderId]);
+  }, [hc2, target.collectionId, target.folderId]);
   const handleRun = async (config2) => {
     setError(null);
     setRunning(true);
     setLocalResult(void 0);
     try {
       const { requests, metadata } = await loadCollectionTargets(
-        hc,
+        hc2,
         target.collectionId,
         target.folderId
       );
@@ -21357,13 +21594,13 @@ function CollectionLoadModal({ hc, target, onClose }) {
       setProgress(COLLECTION_RESULT_KEY, { completed: 0, total: config2.count, running: true });
       const aggregate2 = await runLoadTest(targets, config2, {
         signal: controller.signal,
-        send: createHostSender(hc),
+        send: createHostSender(hc2),
         onProgress: (completed, total) => {
           setLocalProgress({ completed, total });
           setProgress(COLLECTION_RESULT_KEY, { completed, total, running: true });
         },
         onRequestComplete: ({ target: completedTarget, sample: sample2, result: result2 }) => {
-          logLoadTestRequest(hc, {
+          logLoadTestRequest(hc2, {
             requestName: sample2.requestName ?? completedTarget.name,
             collectionName,
             result: result2
@@ -21417,7 +21654,7 @@ function CollectionLoadModal({ hc, target, onClose }) {
                 }
               ) : null,
               running ? /* @__PURE__ */ jsx(Spinner, { label: `Running load test (${progress.completed}/${progress.total})` }) : null,
-              /* @__PURE__ */ jsx(LoadResultsView, { result, title: "Collection results", hc })
+              /* @__PURE__ */ jsx(LoadResultsView, { result, title: "Collection results", hc: hc2 })
             ] }),
             /* @__PURE__ */ jsx(ModalFooter, { children: /* @__PURE__ */ jsx(
               Button,
@@ -21439,7 +21676,7 @@ function CollectionLoadModal({ hc, target, onClose }) {
 }
 
 // src/StatusBarHost.tsx
-function StatusBarHost({ hc }) {
+function StatusBarHost({ hc: hc2 }) {
   const modal = useCollectionModalState();
   if (!modal.open || !modal.target) {
     return null;
@@ -21447,7 +21684,7 @@ function StatusBarHost({ hc }) {
   return /* @__PURE__ */ jsx(
     CollectionLoadModal,
     {
-      hc,
+      hc: hc2,
       target: modal.target,
       onClose: () => {
         closeCollectionModal();
@@ -21457,32 +21694,32 @@ function StatusBarHost({ hc }) {
 }
 
 // src/renderer.tsx
-function activate(hc) {
-  installReact(hc.react);
-  void initStore();
-  void initDatabase(hc);
-  hc.subscriptions.push(
-    hc.ui.registerRequestTab({
+function activate(hc2) {
+  installReact(hc2.react);
+  void initStore(hc2);
+  void initDatabase(hc2);
+  hc2.subscriptions.push(
+    hc2.ui.registerRequestTab({
       id: "load-tester",
       title: "Load Tester",
       order: 55,
-      Component: ({ context }) => /* @__PURE__ */ jsx(LoadTesterTab, { hc, context })
+      Component: ({ context }) => /* @__PURE__ */ jsx(LoadTesterTab, { hc: hc2, context })
     }),
-    hc.ui.registerResponseTab({
+    hc2.ui.registerResponseTab({
       id: "load-testing",
       title: "Load Testing",
       order: 55,
       // Host supports `noResponse`; cast until SDK types include it.
       when: "noResponse",
-      Component: ({ context }) => /* @__PURE__ */ jsx(ResponseLoadTab, { hc, context })
+      Component: ({ context }) => /* @__PURE__ */ jsx(ResponseLoadTab, { hc: hc2, context })
     }),
-    hc.ui.registerStatusBarItem({
+    hc2.ui.registerStatusBarItem({
       id: "modal-host",
       alignment: "right",
       order: 999,
-      Component: () => /* @__PURE__ */ jsx(StatusBarHost, { hc })
+      Component: () => /* @__PURE__ */ jsx(StatusBarHost, { hc: hc2 })
     }),
-    hc.commands.register("load-test.collection", (payload) => {
+    hc2.commands.register("load-test.collection", (payload) => {
       if (!payload || typeof payload !== "object") {
         throw new Error("Load Test requires a collection or folder target.");
       }
@@ -21495,7 +21732,7 @@ function activate(hc) {
         folderId: typeof folderId === "number" ? folderId : null
       });
     }),
-    hc.ui.registerContextMenuItem({
+    hc2.ui.registerContextMenuItem({
       id: "load-test",
       title: "Load Test",
       command: "load-test.collection",

@@ -2,10 +2,10 @@
   "id": "com.harborclient.plugins.load-test",
   "name": "Load Tester",
   "author": "HarborClient",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "engines": { "harborclient": ">=1.8.4" },
   "renderer": "dist/renderer.js",
-  "permissions": ["ui", "database", "filesystem:pick"],
+  "permissions": ["ui", "storage", "database", "filesystem:pick"],
   "contributes": {
     "requestTabs": [{ "id": "load-tester", "title": "Load Tester" }],
     "responseTabs": [{ "id": "load-testing", "title": "Load Testing" }],

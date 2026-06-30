@@ -198,6 +198,9 @@ async function executeRequest(
   try {
     await waitDelay(options.delayMs, signal);
     result = await send(target, options, signal);
+    if (!result || typeof result !== 'object' || typeof result.timeMs !== 'number') {
+      result = errorResult('Host did not return a send result.');
+    }
   } catch (error) {
     const message =
       error instanceof Error

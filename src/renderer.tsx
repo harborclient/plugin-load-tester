@@ -16,7 +16,7 @@ import { initStore } from './store';
 export function activate(hc: PluginContext): void {
   installReact(hc.react);
 
-  void initStore();
+  void initStore(hc);
   void initDatabase(hc);
 
   hc.subscriptions.push(

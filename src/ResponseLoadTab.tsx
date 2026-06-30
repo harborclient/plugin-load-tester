@@ -1,7 +1,8 @@
+import { useEffect } from '@harborclient/sdk/react';
 import type { PluginContext, ResponseTabContext } from '@harborclient/sdk';
 import { LoadResultsView } from './LoadResultsView';
 import { requestKey } from './requestKey';
-import { useLoadProgress, useLoadResult } from './store';
+import { reloadFromStorage, useLoadProgress, useLoadResult } from './store';
 
 interface Props {
   /** Active response tab context from HarborClient. */
@@ -17,6 +18,28 @@ export function ResponseLoadTab({ context, hc }: Props) {
   const key = requestKey(context.draft);
   const result = useLoadResult(key);
   const progress = useLoadProgress(key);
+
+  /**
+   * Reloads persisted results from other plugin webviews on mount, when the
+   * request key changes, on focus/visibility, and on a short interval so
+   * progress updates while this tab stays selected during a run.
+   */
+  useEffect(() => {
+    const reload = (): void => {
+      void reloadFromStorage();
+    };
+
+    reload();
+    window.addEventListener('focus', reload);
+    document.addEventListener('visibilitychange', reload);
+    const intervalId = window.setInterval(reload, 500);
+
+    return () => {
+      window.removeEventListener('focus', reload);
+      document.removeEventListener('visibilitychange', reload);
+      window.clearInterval(intervalId);
+    };
+  }, [key]);
 
   return (
     <div className="h-full overflow-y-auto p-4">
