@@ -1,5 +1,11 @@
 import { useSyncExternalStore } from '@harborclient/sdk/react';
 import type { PluginContext } from '@harborclient/sdk';
+import { asRecord, recordOf } from '@harborclient/sdk/storage';
+import {
+  createExternalStore,
+  createStorageStore,
+  type StorageStore
+} from '@harborclient/sdk/store';
 import type { LoadAggregate, LoadProgress, LoadTestConfig } from './types';
 
 /** Storage key for completed load test aggregates keyed by request key. */
@@ -17,83 +23,31 @@ export const DEFAULT_LOAD_TEST_CONFIG: LoadTestConfig = {
   keepAlive: true
 };
 
-let hc: PluginContext | null = null;
-let defaultConfig: LoadTestConfig = { ...DEFAULT_LOAD_TEST_CONFIG };
-/** Cached snapshot for useSyncExternalStore — must keep referential equality between updates. */
-let defaultConfigSnapshot: LoadTestConfig = { ...defaultConfig };
-const resultsByKey = new Map<string, LoadAggregate>();
-const progressByKey = new Map<string, LoadProgress>();
+let defaultConfigStore = createExternalStore<LoadTestConfig>({ ...DEFAULT_LOAD_TEST_CONFIG });
+let resultsStore: StorageStore<Record<string, LoadAggregate>> | null = null;
+let progressStore: StorageStore<Record<string, LoadProgress>> | null = null;
 const abortControllers = new Map<string, AbortController>();
-const listeners = new Set<() => void>();
-/** Last serialized results snapshot used to skip no-op storage reloads. */
-let lastResultsJson = '{}';
-/** Last serialized progress snapshot used to skip no-op storage reloads. */
-let lastProgressJson = '{}';
 
 /**
- * Notifies all store subscribers of a state change.
- */
-function notify(): void {
-  for (const listener of listeners) {
-    listener();
-  }
-}
-
-/**
- * Refreshes the cached default-config snapshot after in-memory updates.
- */
-function refreshDefaultConfigSnapshot(): void {
-  defaultConfigSnapshot = { ...defaultConfig };
-}
-
-/**
- * Serializes the in-memory results map for plugin storage.
+ * Serializes results keyed by request key for plugin storage.
  *
  * @param source - Current results keyed by request key.
  */
 export function serializeResultsRecord(
-  source: Map<string, LoadAggregate>
+  source: Record<string, LoadAggregate> | Map<string, LoadAggregate>
 ): Record<string, LoadAggregate> {
-  return Object.fromEntries(source.entries());
+  return source instanceof Map ? Object.fromEntries(source.entries()) : source;
 }
 
 /**
- * Serializes the in-memory progress map for plugin storage.
+ * Serializes progress keyed by request key for plugin storage.
  *
  * @param source - Current progress keyed by request key.
  */
 export function serializeProgressRecord(
-  source: Map<string, LoadProgress>
+  source: Record<string, LoadProgress> | Map<string, LoadProgress>
 ): Record<string, LoadProgress> {
-  return Object.fromEntries(source.entries());
-}
-
-/**
- * Replaces the in-memory results map from a persisted record.
- *
- * @param record - Stored results keyed by request key.
- */
-export function applyResultsRecord(record: Record<string, LoadAggregate>): void {
-  resultsByKey.clear();
-  for (const [key, aggregate] of Object.entries(record)) {
-    if (isLoadAggregate(aggregate)) {
-      resultsByKey.set(key, aggregate);
-    }
-  }
-}
-
-/**
- * Replaces the in-memory progress map from a persisted record.
- *
- * @param record - Stored progress keyed by request key.
- */
-export function applyProgressRecord(record: Record<string, LoadProgress>): void {
-  progressByKey.clear();
-  for (const [key, progress] of Object.entries(record)) {
-    if (isLoadProgress(progress)) {
-      progressByKey.set(key, progress);
-    }
-  }
+  return source instanceof Map ? Object.fromEntries(source.entries()) : source;
 }
 
 /**
@@ -102,15 +56,15 @@ export function applyProgressRecord(record: Record<string, LoadProgress>): void 
  * @param value - Candidate value from storage.
  */
 function isLoadAggregate(value: unknown): value is LoadAggregate {
-  if (!value || typeof value !== 'object') {
+  const record = asRecord(value);
+  if (!record) {
     return false;
   }
-  const candidate = value as LoadAggregate;
   return (
-    typeof candidate.startedAt === 'number' &&
-    typeof candidate.finishedAt === 'number' &&
-    typeof candidate.total === 'number' &&
-    Array.isArray(candidate.samples)
+    typeof record.startedAt === 'number' &&
+    typeof record.finishedAt === 'number' &&
+    typeof record.total === 'number' &&
+    Array.isArray(record.samples)
   );
 }
 
@@ -120,14 +74,14 @@ function isLoadAggregate(value: unknown): value is LoadAggregate {
  * @param value - Candidate value from storage.
  */
 function isLoadProgress(value: unknown): value is LoadProgress {
-  if (!value || typeof value !== 'object') {
+  const record = asRecord(value);
+  if (!record) {
     return false;
   }
-  const candidate = value as LoadProgress;
   return (
-    typeof candidate.completed === 'number' &&
-    typeof candidate.total === 'number' &&
-    typeof candidate.running === 'boolean'
+    typeof record.completed === 'number' &&
+    typeof record.total === 'number' &&
+    typeof record.running === 'boolean'
   );
 }
 
@@ -137,16 +91,7 @@ function isLoadProgress(value: unknown): value is LoadProgress {
  * @param stored - Raw value from plugin storage.
  */
 export function hydrateResultsRecord(stored: unknown): Record<string, LoadAggregate> {
-  if (!stored || typeof stored !== 'object' || Array.isArray(stored)) {
-    return {};
-  }
-  const record: Record<string, LoadAggregate> = {};
-  for (const [key, value] of Object.entries(stored)) {
-    if (isLoadAggregate(value)) {
-      record[key] = value;
-    }
-  }
-  return record;
+  return recordOf(stored, isLoadAggregate);
 }
 
 /**
@@ -155,64 +100,27 @@ export function hydrateResultsRecord(stored: unknown): Record<string, LoadAggreg
  * @param stored - Raw value from plugin storage.
  */
 export function hydrateProgressRecord(stored: unknown): Record<string, LoadProgress> {
-  if (!stored || typeof stored !== 'object' || Array.isArray(stored)) {
-    return {};
-  }
-  const record: Record<string, LoadProgress> = {};
-  for (const [key, value] of Object.entries(stored)) {
-    if (isLoadProgress(value)) {
-      record[key] = value;
-    }
-  }
-  return record;
+  return recordOf(stored, isLoadProgress);
 }
 
 /**
- * Updates the serialized storage snapshot caches from the current in-memory maps.
+ * Returns the initialized results store.
  */
-function refreshStorageSnapshotCaches(): void {
-  lastResultsJson = JSON.stringify(serializeResultsRecord(resultsByKey));
-  lastProgressJson = JSON.stringify(serializeProgressRecord(progressByKey));
+function requireResultsStore(): StorageStore<Record<string, LoadAggregate>> {
+  if (!resultsStore) {
+    throw new Error('Load tester store is not initialized.');
+  }
+  return resultsStore;
 }
 
 /**
- * Applies hydrated storage records only when their serialized form changed.
- *
- * @param storedResults - Raw results value from plugin storage.
- * @param storedProgress - Raw progress value from plugin storage.
- * @returns Whether in-memory state was updated.
+ * Returns the initialized progress store.
  */
-function syncFromStored(storedResults: unknown, storedProgress: unknown): boolean {
-  const resultsRecord = hydrateResultsRecord(storedResults);
-  const progressRecord = hydrateProgressRecord(storedProgress);
-  const resultsJson = JSON.stringify(resultsRecord);
-  const progressJson = JSON.stringify(progressRecord);
-
-  let changed = false;
-  if (resultsJson !== lastResultsJson) {
-    applyResultsRecord(resultsRecord);
-    lastResultsJson = resultsJson;
-    changed = true;
+function requireProgressStore(): StorageStore<Record<string, LoadProgress>> {
+  if (!progressStore) {
+    throw new Error('Load tester store is not initialized.');
   }
-  if (progressJson !== lastProgressJson) {
-    applyProgressRecord(progressRecord);
-    lastProgressJson = progressJson;
-    changed = true;
-  }
-  return changed;
-}
-
-/**
- * Persists the current results and progress snapshots to plugin storage.
- */
-async function persistSnapshots(): Promise<void> {
-  if (!hc) {
-    return;
-  }
-  await Promise.all([
-    hc.storage.set(RESULTS_STORAGE_KEY, serializeResultsRecord(resultsByKey)),
-    hc.storage.set(PROGRESS_STORAGE_KEY, serializeProgressRecord(progressByKey))
-  ]);
+  return progressStore;
 }
 
 /**
@@ -221,15 +129,48 @@ async function persistSnapshots(): Promise<void> {
  * @param context - Renderer plugin context from HarborClient.
  */
 export async function initStore(context: PluginContext): Promise<void> {
-  hc = context;
-  refreshDefaultConfigSnapshot();
+  resultsStore = createStorageStore({
+    storage: context.storage,
+    key: RESULTS_STORAGE_KEY,
+    parse: hydrateResultsRecord
+  });
+  progressStore = createStorageStore({
+    storage: context.storage,
+    key: PROGRESS_STORAGE_KEY,
+    parse: hydrateProgressRecord
+  });
+  defaultConfigStore = createExternalStore({ ...DEFAULT_LOAD_TEST_CONFIG });
+  await Promise.all([resultsStore.reloadFromStorage(), progressStore.reloadFromStorage()]);
+}
 
-  const [storedResults, storedProgress] = await Promise.all([
-    hc.storage.get<Record<string, LoadAggregate>>(RESULTS_STORAGE_KEY),
-    hc.storage.get<Record<string, LoadProgress>>(PROGRESS_STORAGE_KEY)
-  ]);
-  syncFromStored(storedResults, storedProgress);
-  notify();
+/**
+ * Aborts active runs and clears module-level store state on plugin deactivation.
+ *
+ * Push onto {@link PluginContext.subscriptions} from {@link activate} so the host
+ * tears down singletons when the plugin reloads or disables.
+ */
+export function disposeStore(): void {
+  for (const controller of abortControllers.values()) {
+    controller.abort();
+  }
+  abortControllers.clear();
+  resultsStore = null;
+  progressStore = null;
+  defaultConfigStore = createExternalStore({ ...DEFAULT_LOAD_TEST_CONFIG });
+}
+
+/**
+ * Returns the storage-backed results store after {@link initStore}.
+ */
+export function getResultsStore(): StorageStore<Record<string, LoadAggregate>> {
+  return requireResultsStore();
+}
+
+/**
+ * Returns the storage-backed progress store after {@link initStore}.
+ */
+export function getProgressStore(): StorageStore<Record<string, LoadProgress>> {
+  return requireProgressStore();
 }
 
 /**
@@ -239,16 +180,25 @@ export async function initStore(context: PluginContext): Promise<void> {
  * surface writes storage (for example when the request tab completes a run).
  */
 export async function reloadFromStorage(): Promise<void> {
-  if (!hc) {
-    return;
-  }
-  const [storedResults, storedProgress] = await Promise.all([
-    hc.storage.get<Record<string, LoadAggregate>>(RESULTS_STORAGE_KEY),
-    hc.storage.get<Record<string, LoadProgress>>(PROGRESS_STORAGE_KEY)
-  ]);
-  if (syncFromStored(storedResults, storedProgress)) {
-    notify();
-  }
+  await Promise.all([resultsStore?.reloadFromStorage(), progressStore?.reloadFromStorage()]);
+}
+
+/**
+ * Replaces the in-memory results snapshot from a hydrated record.
+ *
+ * @param record - Stored results keyed by request key.
+ */
+export async function applyResultsRecord(record: Record<string, LoadAggregate>): Promise<void> {
+  await requireResultsStore().set(record);
+}
+
+/**
+ * Replaces the in-memory progress snapshot from a hydrated record.
+ *
+ * @param record - Stored progress keyed by request key.
+ */
+export async function applyProgressRecord(record: Record<string, LoadProgress>): Promise<void> {
+  await requireProgressStore().set(record);
 }
 
 /**
@@ -283,22 +233,19 @@ function clampInt(value: unknown, min: number, max: number, fallback: number): n
 }
 
 /**
- * Subscribes to store changes for useSyncExternalStore.
+ * Subscribes to default-config changes for useSyncExternalStore.
  *
  * @param listener - Callback invoked when store state changes.
  */
 export function subscribeStore(listener: () => void): () => void {
-  listeners.add(listener);
-  return () => {
-    listeners.delete(listener);
-  };
+  return defaultConfigStore.subscribe(listener);
 }
 
 /**
  * Returns the current default load test configuration snapshot.
  */
 export function getDefaultConfigSnapshot(): LoadTestConfig {
-  return defaultConfigSnapshot;
+  return defaultConfigStore.getSnapshot();
 }
 
 /**
@@ -307,71 +254,73 @@ export function getDefaultConfigSnapshot(): LoadTestConfig {
  * @param config - Configuration to save as the new default.
  */
 export function saveDefaultConfig(config: LoadTestConfig): void {
-  defaultConfig = normalizeConfig(config);
-  refreshDefaultConfigSnapshot();
-  notify();
+  defaultConfigStore.setState(normalizeConfig(config));
 }
 
 /**
  * React hook for the default load test configuration.
  */
 export function useDefaultConfig(): LoadTestConfig {
-  return useSyncExternalStore(subscribeStore, getDefaultConfigSnapshot, getDefaultConfigSnapshot);
+  return useSyncExternalStore(
+    defaultConfigStore.subscribe,
+    defaultConfigStore.getSnapshot,
+    defaultConfigStore.getSnapshot
+  );
 }
 
 /**
  * Returns the latest aggregate result for one request key.
  *
- * @param key - Request key from {@link requestKey}.
+ * @param key - Request key from {@link RequestTabContext.requestKey}.
  */
 export function getResult(key: string): LoadAggregate | undefined {
-  return resultsByKey.get(key);
+  return requireResultsStore().getSnapshot()[key];
 }
 
 /**
  * Returns live progress for one request key.
  *
- * @param key - Request key from {@link requestKey}.
+ * @param key - Request key from {@link RequestTabContext.requestKey}.
  */
 export function getProgress(key: string): LoadProgress | undefined {
-  return progressByKey.get(key);
+  return requireProgressStore().getSnapshot()[key];
 }
 
 /**
  * Stores an aggregate result for one request key.
  *
- * @param key - Request key from {@link requestKey}.
+ * @param key - Request key from {@link RequestTabContext.requestKey}.
  * @param aggregate - Completed load test aggregate.
  */
 export function setResult(key: string, aggregate: LoadAggregate): void {
-  resultsByKey.set(key, aggregate);
-  progressByKey.set(key, {
-    completed: aggregate.samples.length,
-    total: aggregate.total,
-    running: false
+  const results = requireResultsStore();
+  const progress = requireProgressStore();
+  void results.set({ ...results.getSnapshot(), [key]: aggregate });
+  void progress.set({
+    ...progress.getSnapshot(),
+    [key]: {
+      completed: aggregate.samples.length,
+      total: aggregate.total,
+      running: false
+    }
   });
-  refreshStorageSnapshotCaches();
-  notify();
-  void persistSnapshots();
 }
 
 /**
  * Updates live progress for one request key.
  *
- * @param key - Request key from {@link requestKey}.
- * @param progress - Current progress snapshot.
+ * @param key - Request key from {@link RequestTabContext.requestKey}.
+ * @param progressValue - Current progress snapshot.
  */
-export function setProgress(key: string, progress: LoadProgress): void {
-  progressByKey.set(key, progress);
-  refreshStorageSnapshotCaches();
-  notify();
-  void persistSnapshots();
+export function setProgress(key: string, progressValue: LoadProgress): void {
+  const progress = requireProgressStore();
+  void progress.set({ ...progress.getSnapshot(), [key]: progressValue });
 }
 
 /**
  * Starts a fresh abort controller for a new run.
  *
- * @param key - Request key from {@link requestKey}.
+ * @param key - Request key from {@link RequestTabContext.requestKey}.
  */
 export function beginRun(key: string): AbortController {
   abortControllers.get(key)?.abort();
@@ -383,7 +332,7 @@ export function beginRun(key: string): AbortController {
 /**
  * Clears the abort controller after a run finishes.
  *
- * @param key - Request key from {@link requestKey}.
+ * @param key - Request key from {@link RequestTabContext.requestKey}.
  */
 export function clearAbortController(key: string): void {
   abortControllers.delete(key);
@@ -392,7 +341,7 @@ export function clearAbortController(key: string): void {
 /**
  * Aborts an active run for one request key.
  *
- * @param key - Request key from {@link requestKey}.
+ * @param key - Request key from {@link RequestTabContext.requestKey}.
  */
 export function abortRun(key: string): void {
   abortControllers.get(key)?.abort();
@@ -401,25 +350,27 @@ export function abortRun(key: string): void {
 /**
  * React hook for one request key's latest aggregate result.
  *
- * @param key - Request key from {@link requestKey}.
+ * @param key - Request key from {@link RequestTabContext.requestKey}.
  */
 export function useLoadResult(key: string): LoadAggregate | undefined {
+  const store = requireResultsStore();
   return useSyncExternalStore(
-    subscribeStore,
-    () => getResult(key),
-    () => getResult(key)
+    store.subscribe,
+    () => store.getSnapshot()[key],
+    () => store.getSnapshot()[key]
   );
 }
 
 /**
  * React hook for one request key's live progress.
  *
- * @param key - Request key from {@link requestKey}.
+ * @param key - Request key from {@link RequestTabContext.requestKey}.
  */
 export function useLoadProgress(key: string): LoadProgress | undefined {
+  const store = requireProgressStore();
   return useSyncExternalStore(
-    subscribeStore,
-    () => getProgress(key),
-    () => getProgress(key)
+    store.subscribe,
+    () => store.getSnapshot()[key],
+    () => store.getSnapshot()[key]
   );
 }

@@ -1,7 +1,14 @@
 import type { ReactPortal } from 'react';
 import { useEffect, useId, useState } from '@harborclient/sdk/react';
 import type { PluginContext } from '@harborclient/sdk';
-import { Button, Modal, ModalFooter, Spinner, StatusMessage } from '@harborclient/sdk/components';
+import {
+  Button,
+  Modal,
+  ModalFooter,
+  Spinner,
+  StatusMessage,
+  portalToBody
+} from '@harborclient/sdk/components';
 import { logLoadTestRequest } from './consoleLog';
 import { createHostSender } from './sendViaHost';
 import { LoadTestForm } from './LoadTestForm';
@@ -9,7 +16,6 @@ import { LoadResultsView } from './LoadResultsView';
 import { runLoadTest } from './loadEngine';
 import { loadCollectionTargets } from './hostApi';
 import { closeCollectionModal, type CollectionLoadTarget } from './modalSignal';
-import { portalToBody } from './reactHost';
 import { resolveSavedRequest } from './resolve';
 import { abortRun, beginRun, clearAbortController, setProgress, setResult } from './store';
 import type { LoadAggregate, LoadTestConfig } from './types';

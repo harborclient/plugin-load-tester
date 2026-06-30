@@ -1,0 +1,2 @@
+overrides:
+  '@harborclient/sdk': link:../../../../../home/sean/.local/share/pnpm/global/5/node_modules/@harborclient/sdk

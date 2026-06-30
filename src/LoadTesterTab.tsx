@@ -5,7 +5,6 @@ import { logLoadTestRequest } from './consoleLog';
 import { LoadTestForm } from './LoadTestForm';
 import { runLoadTest } from './loadEngine';
 import { createHostSender } from './sendViaHost';
-import { requestKey } from './requestKey';
 import { resolveFromContext } from './resolve';
 import {
   abortRun,
@@ -28,7 +27,7 @@ interface Props {
  * Request editor tab for configuring and running a single-request load test.
  */
 export function LoadTesterTab({ context, hc }: Props) {
-  const key = requestKey(context.draft);
+  const key = context.requestKey;
   const progress = useLoadProgress(key);
   const [error, setError] = useState<string | null>(null);
 

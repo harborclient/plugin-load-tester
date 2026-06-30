@@ -89,7 +89,8 @@ function buildSavedRequestContext(
     readOnly: true,
     collectionAuth: collection.auth,
     collectionHeaders: collection.headers,
-    variables: variablesRecord(collection.variables)
+    variables: variablesRecord(collection.variables),
+    requestKey: `req:${request.id}`
   };
 }
 

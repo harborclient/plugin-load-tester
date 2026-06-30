@@ -13,6 +13,12 @@ import {
   PointElement,
   Tooltip
 } from 'chart.js';
+import { createLogger } from '@harborclient/sdk/runtime-utils';
+
+/**
+ * Shared logger for load-tester chart rendering errors.
+ */
+export const chartLogger = createLogger('load-tester');
 
 let registered = false;
 

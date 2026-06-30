@@ -1,6 +1,6 @@
 import { useEffect, useRef } from '@harborclient/sdk/react';
 import { Chart, type ChartConfiguration } from 'chart.js';
-import { destroyChart, ensureChartsRegistered, themeColor } from './chartUtils';
+import { destroyChart, chartLogger, ensureChartsRegistered, themeColor } from './chartUtils';
 import { ChartFrame } from './ChartFrame';
 
 interface Props {
@@ -74,7 +74,7 @@ export function DoughnutChart({ labels, values }: Props) {
         chartRef.current?.resize();
       });
     } catch (error) {
-      console.error('[load-tester] failed to render doughnut chart', error);
+      chartLogger.error('failed to render doughnut chart', error);
       destroyChart(chartRef.current);
       chartRef.current = null;
     }

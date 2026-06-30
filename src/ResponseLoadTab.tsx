@@ -1,8 +1,8 @@
 import { useEffect } from '@harborclient/sdk/react';
+import { syncOnWindowFocus } from '@harborclient/sdk/store';
 import type { PluginContext, ResponseTabContext } from '@harborclient/sdk';
 import { LoadResultsView } from './LoadResultsView';
-import { requestKey } from './requestKey';
-import { reloadFromStorage, useLoadProgress, useLoadResult } from './store';
+import { getProgressStore, getResultsStore, useLoadProgress, useLoadResult } from './store';
 
 interface Props {
   /** Active response tab context from HarborClient. */
@@ -15,7 +15,7 @@ interface Props {
  * Response viewer tab that shows load test charts for the active request.
  */
 export function ResponseLoadTab({ context, hc }: Props) {
-  const key = requestKey(context.draft);
+  const key = context.requestKey;
   const result = useLoadResult(key);
   const progress = useLoadProgress(key);
 
@@ -25,19 +25,11 @@ export function ResponseLoadTab({ context, hc }: Props) {
    * progress updates while this tab stays selected during a run.
    */
   useEffect(() => {
-    const reload = (): void => {
-      void reloadFromStorage();
-    };
-
-    reload();
-    window.addEventListener('focus', reload);
-    document.addEventListener('visibilitychange', reload);
-    const intervalId = window.setInterval(reload, 500);
-
+    const syncDisposable = syncOnWindowFocus([getResultsStore(), getProgressStore()], {
+      intervalMs: 500
+    });
     return () => {
-      window.removeEventListener('focus', reload);
-      document.removeEventListener('visibilitychange', reload);
-      window.clearInterval(intervalId);
+      syncDisposable.dispose();
     };
   }, [key]);
 

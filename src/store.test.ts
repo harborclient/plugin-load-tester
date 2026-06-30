@@ -1,4 +1,5 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
+import type { PluginContext } from '@harborclient/sdk';
 import type { LoadAggregate, LoadProgress } from './types';
 import {
   applyProgressRecord,
@@ -7,6 +8,7 @@ import {
   getResult,
   hydrateProgressRecord,
   hydrateResultsRecord,
+  initStore,
   serializeProgressRecord,
   serializeResultsRecord
 } from './store';
@@ -39,6 +41,26 @@ const sampleProgress: LoadProgress = {
 };
 
 const requestKey = 'GET https://example.com';
+
+/**
+ * In-memory plugin storage for store unit tests.
+ */
+function createTestStorage(): PluginContext['storage'] {
+  const data = new Map<string, unknown>();
+  return {
+    get: async <T>(key: string) => data.get(key) as T | undefined,
+    set: async (key: string, value: unknown) => {
+      data.set(key, value);
+    }
+  };
+}
+
+/**
+ * Initializes the load tester store with mock storage for unit tests.
+ */
+async function initTestStore(): Promise<void> {
+  await initStore({ storage: createTestStorage() } as PluginContext);
+}
 
 describe('serializeResultsRecord', () => {
   it('converts a results map to a plain record', () => {
@@ -88,21 +110,29 @@ describe('hydrateProgressRecord', () => {
 });
 
 describe('applyResultsRecord', () => {
-  it('replaces the in-memory results map from a hydrated record', () => {
-    applyResultsRecord({});
+  beforeEach(async () => {
+    await initTestStore();
+  });
+
+  it('replaces the in-memory results map from a hydrated record', async () => {
+    await applyResultsRecord({});
     expect(getResult(requestKey)).toBeUndefined();
 
-    applyResultsRecord({ [requestKey]: sampleAggregate });
+    await applyResultsRecord({ [requestKey]: sampleAggregate });
     expect(getResult(requestKey)).toEqual(sampleAggregate);
   });
 });
 
 describe('applyProgressRecord', () => {
-  it('replaces the in-memory progress map from a hydrated record', () => {
-    applyProgressRecord({});
+  beforeEach(async () => {
+    await initTestStore();
+  });
+
+  it('replaces the in-memory progress map from a hydrated record', async () => {
+    await applyProgressRecord({});
     expect(getProgress(requestKey)).toBeUndefined();
 
-    applyProgressRecord({ [requestKey]: sampleProgress });
+    await applyProgressRecord({ [requestKey]: sampleProgress });
     expect(getProgress(requestKey)).toEqual(sampleProgress);
   });
 });

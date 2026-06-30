@@ -6,7 +6,7 @@ import { openCollectionModal } from './modalSignal';
 import { LoadTesterTab } from './LoadTesterTab';
 import { ResponseLoadTab } from './ResponseLoadTab';
 import { StatusBarHost } from './StatusBarHost';
-import { initStore } from './store';
+import { initStore, disposeStore } from './store';
 
 /**
  * Registers load tester request tab, response tab, collection menu action, and modal host.
@@ -19,6 +19,7 @@ export function activate(hc: PluginContext): void {
   void initStore(hc);
   void initDatabase(hc);
 
+  hc.subscriptions.push({ dispose: disposeStore });
   hc.subscriptions.push(
     hc.ui.registerRequestTab({
       id: 'load-tester',

@@ -2,6 +2,7 @@ import { useEffect, useRef } from '@harborclient/sdk/react';
 import { Chart, type ChartConfiguration } from 'chart.js';
 import {
   cartesianScaleOptions,
+  chartLogger,
   chartPluginOptions,
   destroyChart,
   ensureChartsRegistered,
@@ -76,7 +77,7 @@ export function BarChart({ labels, values }: Props) {
         chartRef.current?.resize();
       });
     } catch (error) {
-      console.error('[load-tester] failed to render bar chart', error);
+      chartLogger.error('failed to render bar chart', error);
       destroyChart(chartRef.current);
       chartRef.current = null;
     }
