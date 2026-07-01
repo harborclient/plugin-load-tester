@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "pluginId": "com.harborclient.plugins.load-test",
-  "pluginVersion": "1.0.2",
+  "pluginId": "com.harborclient.plugins.load-tester",
+  "pluginVersion": "1.0.3",
   "algorithm": "Ed25519",
   "files": [
     {
@@ -30,7 +30,7 @@
     },
     {
       "path": "manifest.json",
-      "sha256": "4fcfaeec65cfb6e096a49717c0d067f34d4bca2a51ca8f846c2de8cb12e4bbd6"
+      "sha256": "3e3b03df96b5fc665563f9f51b74052b4766fb2dc2cbe4f74ea1351ddcd47c09"
     },
     {
       "path": "package.json",
@@ -181,5 +181,5 @@
       "sha256": "663c22f2cb634722bc1c1191c4808b53c89d930979d4936cb6d0a539f4476ac9"
     }
   ],
-  "signature": "ss2QM5UN2uV+Pr1ethoPOMiIaCjSS6+Q8iUf+FyswNBKQflNeg3HETzC/L8/hpf9CvhtGVvjPnf5Si+BTZTPBg=="
+  "signature": "Mbg/hXfDlHaAMEXM2iA8HNCGLWB9LJRW80VeKJkyOyu0kKtBtguAZYAsOOt1eYnematlPtvZLJ54tyD5az4oCQ=="
 }

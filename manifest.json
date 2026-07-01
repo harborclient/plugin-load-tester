@@ -1,8 +1,14 @@
 {
-  "id": "com.harborclient.plugins.load-test",
+  "id": "com.harborclient.plugins.load-tester",
   "name": "Load Tester",
   "author": "HarborClient",
-  "version": "1.0.2",
+  "version": "1.0.3",
+  "summary": "Fire repeated requests against an endpoint or collection and chart latency percentiles, throughput, and error rate.",
+  "description": "README.md",
+  "categories": ["testing", "collections", "requests"],
+  "screenshots": [
+     "https://raw.githubusercontent.com/harborclient/plugin-load-tester/main/screenshot.png"
+  ],
   "engines": { "harborclient": ">=1.8.4" },
   "renderer": "dist/renderer.js",
   "permissions": ["ui", "storage", "database", "filesystem:pick"],
@@ -13,8 +19,8 @@
     "commands": [{ "id": "load-test.collection", "title": "Load Test Collection" }],
     "contextMenus": [
       {
-        "id": "load-test",
-        "title": "Load Test",
+        "id": "load-tester",
+        "title": "Load Tester",
         "command": "load-test.collection",
         "when": ["collection", "folder"]
       }
