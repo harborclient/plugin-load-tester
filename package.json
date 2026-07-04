@@ -1,7 +1,8 @@
 {
-  "name": "harborclient-plugin-load-tester",
+  "name": "@harborclient/plugin-load-tester",
   "type": "module",
   "scripts": {
+    "release": "bash scripts/publish.sh",
     "build": "node scripts/build.mjs",
     "dev": "node scripts/build.mjs --watch",
     "format": "prettier --write .",
@@ -15,7 +16,7 @@
     "plugin:verify": "node --experimental-strip-types scripts/plugin-verify.ts"
   },
   "dependencies": {
-    "@harborclient/sdk": "^1.0.0",
+    "@harborclient/sdk": "^1.0.33",
     "chart.js": "^4.5.0"
   },
   "devDependencies": {
