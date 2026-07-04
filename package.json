@@ -9,7 +9,7 @@
     "format:check": "prettier --check .",
     "lint": "eslint --cache .",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p scripts/tsconfig.json",
     "screenshot": "bash scripts/render-screenshot.sh",
     "pack": "pnpm build && zip -r ../harborclient-plugin-load-tester.hcp manifest.json README.md dist",
     "plugin:sign": "node --experimental-strip-types scripts/plugin-sign.ts",
