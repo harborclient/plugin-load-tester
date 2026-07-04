@@ -58,7 +58,7 @@ export function activate(hc: PluginContext): void {
       });
     }),
     hc.ui.registerContextMenuItem({
-      id: 'load-test',
+      id: 'load-tester',
       title: 'Load Test',
       command: 'load-test.collection',
       when: ['collection', 'folder'],
