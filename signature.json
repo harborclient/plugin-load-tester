@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "pluginId": "com.harborclient.plugins.load-tester",
-  "pluginVersion": "1.0.5",
+  "pluginVersion": "1.0.7",
   "algorithm": "Ed25519",
   "files": [
     {
@@ -22,7 +22,7 @@
     },
     {
       "path": "dist/renderer.js",
-      "sha256": "ffbea7b40d4b5cb84e83d4b4284ee23328402b16b4ce07fdbe4e55e66111c970"
+      "sha256": "981c830502fd38afb7a4f2497f7ede8c093742011d23deec60d0b1e3424b91f5"
     },
     {
       "path": "eslint.config.mjs",
@@ -30,7 +30,7 @@
     },
     {
       "path": "manifest.json",
-      "sha256": "5b06723492e870fecae4f6037533df6d3e87075da3cce3113b0a481d41d54422"
+      "sha256": "f7b60284a4cc16d5dd772bd8b5efeb1fe9230e6acb6272523082c7bfe2109099"
     },
     {
       "path": "package.json",
@@ -150,7 +150,7 @@
     },
     {
       "path": "src/renderer.tsx",
-      "sha256": "f77d396be1fbcbc318d2cca20696dc147b38e86152b25e1b8f0ca9cea2f5c7ad"
+      "sha256": "1b1ec89d12de383345ac3669459983bf50795ac8a019f5018036ee5e78d05020"
     },
     {
       "path": "src/resolve.ts",
@@ -186,5 +186,5 @@
     }
   ],
   "keyId": "com.harborclient.plugins.load-tester",
-  "signature": "jcwQj9WCBmmLh2WJ1XJRgcuaF9UtWNYUQ/5/CoKdok9ia2juTQCRWqrE/IKs82ZT6+qJh15bu7Ydi3g/evJ2Bg=="
+  "signature": "OPM6X6KWQqhadeoLKJC3SXk2nLSZathaHlKm6x5qG1qsr0xkEQvsx1N+Tbh5uPoI7zOoXykwRHl7aBOvbBRvDQ=="
 }
