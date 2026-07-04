@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "pluginId": "com.harborclient.plugins.load-tester",
-  "pluginVersion": "1.0.3",
+  "pluginVersion": "1.0.5",
   "algorithm": "Ed25519",
   "files": [
     {
@@ -22,7 +22,7 @@
     },
     {
       "path": "dist/renderer.js",
-      "sha256": "d0a8b5bad51859e63ae2199919694d6cbcaac4d1547cc0ef8daf5d58c0328010"
+      "sha256": "ffbea7b40d4b5cb84e83d4b4284ee23328402b16b4ce07fdbe4e55e66111c970"
     },
     {
       "path": "eslint.config.mjs",
@@ -30,19 +30,15 @@
     },
     {
       "path": "manifest.json",
-      "sha256": "3e3b03df96b5fc665563f9f51b74052b4766fb2dc2cbe4f74ea1351ddcd47c09"
+      "sha256": "5b06723492e870fecae4f6037533df6d3e87075da3cce3113b0a481d41d54422"
     },
     {
       "path": "package.json",
-      "sha256": "ab8eef4e28a51b931cb2d85e04da7fd4cee6b9b4df84ef2a61c0aae4208423f3"
+      "sha256": "919fcabf4a3e32b8c93805e504d5e7e57ce08b18338f43ea3cbbbce2685f67ca"
     },
     {
       "path": "pnpm-lock.yaml",
-      "sha256": "b50b37891e18bf5dadac1cbab2ced39dfe5f46870caac1f0dab0593079f9dcab"
-    },
-    {
-      "path": "pnpm-workspace.yaml",
-      "sha256": "ecbfb1ae97fd3655cbacd0b358be0c1aa02213ffc97053f09347aa020b23c286"
+      "sha256": "9c63d4253c57ba11d340f2e95199c3b22dcb36f282f9231bbf31d4a985e211a6"
     },
     {
       "path": "README.md",
@@ -50,7 +46,7 @@
     },
     {
       "path": "screenshot.png",
-      "sha256": "c084be3ac3dd525fbd243666fba6ee315c9cd0f41798504c521fb3651a708df1"
+      "sha256": "4659c549b296c41e0a19dd8e14e13d76a0d48731de9f3c31da4b53b3d5e13643"
     },
     {
       "path": "scripts/build.mjs",
@@ -65,12 +61,20 @@
       "sha256": "3e53a3d5d692c5bfd8f063d69b2331743f8afeef3330b7e21a3b69d5daeb2ae8"
     },
     {
+      "path": "scripts/publish.sh",
+      "sha256": "272abe246e7b12684741a9eb3a26928ec7dd9a62ad4e26b95fa104c32d516412"
+    },
+    {
       "path": "scripts/render-screenshot.sh",
       "sha256": "d2fe525f530446f4f53add2abcfed2ec7f11253a7d128608781ccd18487fbb25"
     },
     {
       "path": "scripts/screenshot-marketing.html",
-      "sha256": "1a71a2b47eb1ffdedbf9478473ba76b0c654b4efefe684a33250d46ed1967197"
+      "sha256": "ad8bac9bb8c03dc8b705dc8b59e423ce13307ff21180d921176283a1a93985c9"
+    },
+    {
+      "path": "scripts/tsconfig.json",
+      "sha256": "10ed2adadfde55ae516aa437272152cc7012653530f9f83bb226df0167e1647c"
     },
     {
       "path": "src/charts/BarChart.tsx",
@@ -181,5 +185,6 @@
       "sha256": "663c22f2cb634722bc1c1191c4808b53c89d930979d4936cb6d0a539f4476ac9"
     }
   ],
-  "signature": "Mbg/hXfDlHaAMEXM2iA8HNCGLWB9LJRW80VeKJkyOyu0kKtBtguAZYAsOOt1eYnematlPtvZLJ54tyD5az4oCQ=="
+  "keyId": "com.harborclient.plugins.load-tester",
+  "signature": "jcwQj9WCBmmLh2WJ1XJRgcuaF9UtWNYUQ/5/CoKdok9ia2juTQCRWqrE/IKs82ZT6+qJh15bu7Ydi3g/evJ2Bg=="
 }
