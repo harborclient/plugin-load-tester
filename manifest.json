@@ -14,7 +14,7 @@
     "https://raw.githubusercontent.com/harborclient/plugin-load-tester/main/screenshot.png"
   ],
   "engines": {
-    "harborclient": ">=1.8.4"
+    "harborclient": ">=2.0.0"
   },
   "renderer": "dist/renderer.js",
   "permissions": [

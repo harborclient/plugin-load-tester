@@ -1,5 +1,4 @@
 import './databaseTypes';
-import { installReact } from '@harborclient/sdk';
 import type { PluginContext } from '@harborclient/sdk';
 import { initDatabase } from './db';
 import { openCollectionModal } from './modalSignal';
@@ -14,8 +13,6 @@ import { initStore, disposeStore } from './store';
  * @param hc - SDK surface from HarborClient.
  */
 export function activate(hc: PluginContext): void {
-  installReact(hc.react);
-
   void initStore(hc);
   void initDatabase(hc);
 
