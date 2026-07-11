@@ -2,7 +2,7 @@
   "id": "com.harborclient.plugins.load-tester",
   "name": "Load Tester",
   "author": "HarborClient",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "summary": "Fire repeated requests against an endpoint or collection and chart latency percentiles, throughput, and error rate.",
   "description": "README.md",
   "categories": [
