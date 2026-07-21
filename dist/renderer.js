@@ -38,7 +38,7 @@ async function initDatabase(hc) {
   }
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.0.67_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_3c89fa62c09d96ae3e3b559a96baacfd/node_modules/@harborclient/sdk/dist/runtime/reactHost.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/runtime/reactHost.js
 var HOST_REACT_GLOBAL_KEY = "__HARBORCLIENT_HOST_REACT__";
 var HOST_REACT_DOM_GLOBAL_KEY = "__HARBORCLIENT_HOST_REACT_DOM__";
 var hostReact = null;
@@ -86,7 +86,7 @@ function requireHostReactDom() {
   return hostReactDom;
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.0.67_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_3c89fa62c09d96ae3e3b559a96baacfd/node_modules/@harborclient/sdk/dist/runtime/react.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/runtime/react.js
 function hook(name) {
   const react = requireHostReact();
   const fn = react[name];
@@ -147,8 +147,24 @@ function useId() {
 function useLayoutEffect(effect, deps) {
   return hook("useLayoutEffect")(effect, deps);
 }
+function useReducer(reducer, initialArg, init) {
+  return hook("useReducer")(reducer, initialArg, init);
+}
 function createElement(type, props, ...children) {
   return hook("createElement")(type, props, ...children);
+}
+function memo(Component, propsAreEqual) {
+  let Memoized = null;
+  function LazyMemo(props) {
+    const react = requireHostReact();
+    if (Memoized === null) {
+      Memoized = react.memo(Component, propsAreEqual);
+    }
+    return react.createElement(Memoized, props);
+  }
+  const displayName = (typeof Component === "function" ? Component.displayName ?? Component.name : null) ?? "Component";
+  LazyMemo.displayName = `Memo(${displayName})`;
+  return LazyMemo;
 }
 var reactNamespace = {
   useState,
@@ -165,7 +181,9 @@ var reactNamespace = {
   useContext,
   useId,
   useLayoutEffect,
-  createElement
+  useReducer,
+  createElement,
+  memo
 };
 var defaultExport = new Proxy(reactNamespace, {
   get(target, prop, receiver) {
@@ -205,7 +223,7 @@ function useCollectionModalState() {
   return useSyncExternalStore(subscribeModal, getModalSnapshot, getModalSnapshot);
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.0.67_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_3c89fa62c09d96ae3e3b559a96baacfd/node_modules/@harborclient/sdk/dist/runtime/jsx-runtime.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/runtime/jsx-runtime.js
 var Fragment = Symbol.for("@harborclient/sdk.Fragment");
 function build(type, props, key) {
   const react = requireHostReact();
@@ -3488,12 +3506,12 @@ var getDefaultConfig = () => {
 };
 var twMerge = /* @__PURE__ */ createTailwindMerge(getDefaultConfig);
 
-// node_modules/.pnpm/@harborclient+sdk@1.0.67_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_3c89fa62c09d96ae3e3b559a96baacfd/node_modules/@harborclient/sdk/dist/components/utils.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/utils.js
 function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.0.67_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_3c89fa62c09d96ae3e3b559a96baacfd/node_modules/@harborclient/sdk/dist/components/FieldError/index.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/FieldError/index.js
 function spacingClasses(spacing) {
   switch (spacing) {
     case "section":
@@ -3511,7 +3529,7 @@ function FieldError({ children, spacing = "field", roleAlert = true, className, 
   return jsx("p", { ...props, className: cn("hc-field-error text-[14px] text-danger", spacingClasses(spacing), className), role: roleAlert ? "alert" : void 0, children });
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.0.67_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_3c89fa62c09d96ae3e3b559a96baacfd/node_modules/@harborclient/sdk/dist/components/Button/index.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/Button/index.js
 var BUTTON_BASE = "inline-flex cursor-pointer items-center rounded-full app-no-drag";
 var VARIANT_CLASSES = {
   primary: cn(BUTTON_BASE, "min-h-[32px] justify-center border border-transparent bg-accent px-3 py-1 text-[15px] font-medium text-white shadow-sm hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"),
@@ -3526,26 +3544,26 @@ function Button({ variant = "primary", className, type = "button", innerRef, ...
   return jsx("button", { ref: innerRef, type, className: cn("hc-button", VARIANT_CLASSES[variant], className), ...props });
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.0.67_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_3c89fa62c09d96ae3e3b559a96baacfd/node_modules/@harborclient/sdk/dist/components/forms/classes.js
-var field = "rounded-lg border border-separator bg-field px-2.5 py-1.5 text-[16px] text-text app-no-drag";
+// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/forms/classes.js
+var field = "rounded-lg border border-separator bg-field px-2.5 py-1.5 text-text app-no-drag";
 var surfaceField = "w-full rounded-lg border border-separator bg-field px-3 py-2.5 text-[15px] text-text";
 function mergeFieldClasses(variant, className, rootClass) {
   const result = cn(rootClass, variant === "control" ? field : variant === "surface" ? surfaceField : void 0, className);
   return result === "" ? void 0 : result;
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.0.67_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_3c89fa62c09d96ae3e3b559a96baacfd/node_modules/@harborclient/sdk/dist/components/forms/Input.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/forms/Input.js
 function Input({ ref, variant = "control", type, className, ...props }) {
   const resolvedVariant = type === "checkbox" || type === "radio" ? "plain" : variant;
   return jsx("input", { ref, type, className: mergeFieldClasses(resolvedVariant, className, "hc-input"), ...props });
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.0.67_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_3c89fa62c09d96ae3e3b559a96baacfd/node_modules/@harborclient/sdk/dist/runtime/react-dom.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/runtime/react-dom.js
 function createPortal(children, container, key) {
   return requireHostReactDom().createPortal(children, container, key);
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.0.67_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_3c89fa62c09d96ae3e3b559a96baacfd/node_modules/@harborclient/sdk/dist/components/portalToBody.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/portalToBody.js
 function portalToBody(node) {
   if (typeof document === "undefined") {
     throw new Error("portalToBody requires a DOM document");
@@ -3553,25 +3571,17 @@ function portalToBody(node) {
   return createPortal(node, document.body);
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.0.67_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_3c89fa62c09d96ae3e3b559a96baacfd/node_modules/@harborclient/sdk/dist/components/Spinner/index.js
-function sizeClasses(size) {
-  return size === "sm" ? "h-3 w-3" : "h-4 w-4";
-}
-function Spinner({ size = "md", label, className, ...props }) {
-  return jsx("span", { ...props, className: cn("hc-spinner inline-flex items-center justify-center", className), role: label ? "status" : void 0, "aria-label": label, children: jsxs("svg", { className: cn("hc-spinner-icon animate-spin text-accent", sizeClasses(size)), viewBox: "0 0 24 24", fill: "none", "aria-hidden": label ? true : void 0, children: [jsx("circle", { className: "opacity-25", cx: "12", cy: "12", r: "10", stroke: "currentColor", strokeWidth: "4" }), jsx("path", { className: "opacity-75", fill: "currentColor", d: "M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" })] }) });
-}
-
-// node_modules/.pnpm/@fortawesome+free-solid-svg-icons@7.3.0/node_modules/@fortawesome/free-solid-svg-icons/index.mjs
+// node_modules/.pnpm/@fortawesome+free-solid-svg-icons@7.3.1/node_modules/@fortawesome/free-solid-svg-icons/index.mjs
 var faXmark = {
   prefix: "fas",
   iconName: "xmark",
   icon: [384, 512, [128473, 10005, 10006, 10060, 215, "close", "multiply", "remove", "times"], "f00d", "M55.1 73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L147.2 256 9.9 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192.5 301.3 329.9 438.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.8 256 375.1 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192.5 210.7 55.1 73.4z"]
 };
 
-// node_modules/.pnpm/@fortawesome+react-fontawesome@3.3.1_@fortawesome+fontawesome-svg-core@7.3.0_react@19.2.7/node_modules/@fortawesome/react-fontawesome/dist/index.js
+// node_modules/.pnpm/@fortawesome+react-fontawesome@3.5.0_@fortawesome+fontawesome-svg-core@7.3.1_react@19.2.7/node_modules/@fortawesome/react-fontawesome/dist/index.js
 import React, { useId as useId2, useMemo as useMemo2 } from "react";
 
-// node_modules/.pnpm/@fortawesome+fontawesome-svg-core@7.3.0/node_modules/@fortawesome/fontawesome-svg-core/index.mjs
+// node_modules/.pnpm/@fortawesome+fontawesome-svg-core@7.3.1/node_modules/@fortawesome/fontawesome-svg-core/index.mjs
 function _arrayLikeToArray(r5, a3) {
   (null == a3 || a3 > r5.length) && (a3 = r5.length);
   for (var e4 = 0, n3 = Array(a3); e4 < a3; e4++) n3[e4] = r5[e4];
@@ -5822,7 +5832,7 @@ var p$2 = config.measurePerformance && PERFORMANCE && PERFORMANCE.mark && PERFOR
   mark: noop$1,
   measure: noop$1
 };
-var preamble = 'FA "7.3.0"';
+var preamble = 'FA "7.3.1"';
 var begin = function begin2(name) {
   p$2.mark("".concat(preamble, " ").concat(name, " begins"));
   return function() {
@@ -7012,7 +7022,7 @@ var layer = api.layer;
 var text = api.text;
 var counter = api.counter;
 
-// node_modules/.pnpm/@fortawesome+react-fontawesome@3.3.1_@fortawesome+fontawesome-svg-core@7.3.0_react@19.2.7/node_modules/@fortawesome/react-fontawesome/dist/index.js
+// node_modules/.pnpm/@fortawesome+react-fontawesome@3.5.0_@fortawesome+fontawesome-svg-core@7.3.1_react@19.2.7/node_modules/@fortawesome/react-fontawesome/dist/index.js
 function _isNumerical(object) {
   object = object - 0;
   return object === object;
@@ -7206,7 +7216,17 @@ var ANIMATION_CLASSES = {
   spin: "fa-spin",
   spinPulse: "fa-spin-pulse",
   spinReverse: "fa-spin-reverse",
-  pulse: "fa-pulse"
+  pulse: "fa-pulse",
+  // the following animations are only supported in version 7.3.0 and later
+  flip360: "fa-flip-360",
+  buzz: "fa-buzz",
+  float: "fa-float",
+  jello: "fa-jello",
+  spinSnap: "fa-spin-snap",
+  spinSnap4: "fa-spin-snap-4",
+  spinSnap8: "fa-spin-snap-8",
+  swing: "fa-swing",
+  wag: "fa-wag"
 };
 var PULL_CLASSES = {
   left: "fa-pull-left",
@@ -7245,7 +7265,10 @@ var STYLE_CLASSES = {
   inverse: "fa-inverse",
   rotateBy: "fa-rotate-by",
   swapOpacity: "fa-swap-opacity",
-  widthAuto: "fa-width-auto"
+  widthAuto: "fa-width-auto",
+  // the following style classes are only supported in version 7.3.0 and later
+  canvasSquare: "fa-canvas-square",
+  canvasRoomy: "fa-canvas-roomy"
 };
 var LAYER_CLASSES = {
   default: "fa-layers"
@@ -7278,6 +7301,17 @@ function getClassListFromProps(props) {
     swapOpacity,
     rotateBy,
     widthAuto,
+    canvasSquare,
+    canvasRoomy,
+    flip360,
+    buzz,
+    float,
+    jello,
+    spinSnap,
+    spinSnap4,
+    spinSnap8,
+    swing,
+    wag,
     className
   } = props;
   const result = [];
@@ -7310,6 +7344,17 @@ function getClassListFromProps(props) {
   if (!getIsVersion7OrLater()) return result;
   if (rotateBy) result.push(STYLE_CLASSES.rotateBy);
   if (widthAuto) result.push(STYLE_CLASSES.widthAuto);
+  if (canvasSquare) result.push(STYLE_CLASSES.canvasSquare);
+  if (canvasRoomy) result.push(STYLE_CLASSES.canvasRoomy);
+  if (flip360) result.push(ANIMATION_CLASSES.flip360);
+  if (buzz) result.push(ANIMATION_CLASSES.buzz);
+  if (float) result.push(ANIMATION_CLASSES.float);
+  if (jello) result.push(ANIMATION_CLASSES.jello);
+  if (spinSnap) result.push(ANIMATION_CLASSES.spinSnap);
+  if (spinSnap4) result.push(ANIMATION_CLASSES.spinSnap4);
+  if (spinSnap8) result.push(ANIMATION_CLASSES.spinSnap8);
+  if (swing) result.push(ANIMATION_CLASSES.swing);
+  if (wag) result.push(ANIMATION_CLASSES.wag);
   const prefix = config$1.cssPrefix || config$1.familyPrefix || DEFAULT_CLASSNAME_PREFIX;
   return prefix === DEFAULT_CLASSNAME_PREFIX ? result : (
     // TODO: see if we can achieve custom prefix support without iterating
@@ -7359,7 +7404,18 @@ var DEFAULT_PROPS = {
   titleId: void 0,
   transform: void 0,
   swapOpacity: false,
-  widthAuto: false
+  widthAuto: false,
+  canvasSquare: false,
+  canvasRoomy: false,
+  flip360: false,
+  buzz: false,
+  float: false,
+  jello: false,
+  spinSnap: false,
+  spinSnap4: false,
+  spinSnap8: false,
+  swing: false,
+  wag: false
 };
 var DEFAULT_PROP_KEYS = new Set(Object.keys(DEFAULT_PROPS));
 var FontAwesomeIcon = React.forwardRef((props, ref) => {
@@ -7409,7 +7465,7 @@ var FontAwesomeIcon = React.forwardRef((props, ref) => {
 FontAwesomeIcon.displayName = "FontAwesomeIcon";
 var DEFAULT_CLASSNAMES = `${LAYER_CLASSES.default} ${STYLE_CLASSES.fixedWidth}`;
 
-// node_modules/.pnpm/@harborclient+sdk@1.0.67_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_3c89fa62c09d96ae3e3b559a96baacfd/node_modules/@harborclient/sdk/dist/components/FaIcon/index.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/FaIcon/index.js
 function FaIcon({ icon: icon3, className = "h-3.5 w-3.5", title, ...props }) {
   return createElement(FontAwesomeIcon, {
     ...props,
@@ -7418,6 +7474,14 @@ function FaIcon({ icon: icon3, className = "h-3.5 w-3.5", title, ...props }) {
     title,
     "aria-hidden": title ? void 0 : true
   });
+}
+
+// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/Spinner/index.js
+function sizeClasses(size) {
+  return size === "sm" ? "h-3 w-3" : "h-4 w-4";
+}
+function Spinner({ size = "md", label, className, ...props }) {
+  return jsx("span", { ...props, className: cn("hc-spinner inline-flex items-center justify-center", className), role: label ? "status" : void 0, "aria-label": label, children: jsxs("svg", { className: cn("hc-spinner-icon animate-spin text-accent", sizeClasses(size)), viewBox: "0 0 24 24", fill: "none", "aria-hidden": label ? true : void 0, children: [jsx("circle", { className: "opacity-25", cx: "12", cy: "12", r: "10", stroke: "currentColor", strokeWidth: "4" }), jsx("path", { className: "opacity-75", fill: "currentColor", d: "M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" })] }) });
 }
 
 // node_modules/.pnpm/@faker-js+faker@10.5.0/node_modules/@faker-js/faker/dist/base-DzmKJ9Qc.js
@@ -9302,7 +9366,7 @@ var e3 = { airline: { airline: [{ name: `Aegean Airlines`, iataCode: `A3` }, { n
 // node_modules/.pnpm/@faker-js+faker@10.5.0/node_modules/@faker-js/faker/dist/locale/en.js
 var r4 = new yt({ locale: [e3, Ct] });
 
-// node_modules/.pnpm/@harborclient+sdk@1.0.67_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_3c89fa62c09d96ae3e3b559a96baacfd/node_modules/@harborclient/sdk/dist/variables/dynamic.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/variables/dynamic.js
 function categoryImageUrl(category) {
   return r4.image.urlLoremFlickr({ category });
 }
@@ -9806,7 +9870,7 @@ function resolveDynamicVariable(key) {
 }
 var DYNAMIC_VARIABLE_NAMES = Object.keys(DYNAMIC_VARIABLES).sort();
 
-// node_modules/.pnpm/@harborclient+sdk@1.0.67_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_3c89fa62c09d96ae3e3b559a96baacfd/node_modules/@harborclient/sdk/dist/variables/filters.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/variables/filters.js
 var FILTERS = {
   upper: (value) => value.toUpperCase(),
   lower: (value) => value.toLowerCase(),
@@ -9841,7 +9905,7 @@ function applyFilters(value, filters) {
   return current;
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.0.67_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_3c89fa62c09d96ae3e3b559a96baacfd/node_modules/@harborclient/sdk/dist/variables/tokens.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/variables/tokens.js
 var VARIABLE_NAME_CHARS = "\\w$.-";
 var VARIABLE_TOKEN_PATTERN = new RegExp(`\\{\\{\\s*([${VARIABLE_NAME_CHARS}]+)(\\s*\\|\\s*[${VARIABLE_NAME_CHARS}]+)*\\s*\\}\\}`, "g");
 var VALID_NAME_PATTERN = new RegExp(`^[${VARIABLE_NAME_CHARS}]+$`);
@@ -9929,7 +9993,7 @@ function substituteVariablesFromMap(text2, runtimeVars) {
   return substituteWithResolver(text2, (key) => runtimeVars[key]);
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.0.67_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_3c89fa62c09d96ae3e3b559a96baacfd/node_modules/@harborclient/sdk/dist/runtime/store.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/runtime/store.js
 function createExternalStore(initial2) {
   let state = initial2;
   const listeners2 = /* @__PURE__ */ new Set();
@@ -10014,18 +10078,122 @@ function syncOnWindowFocus(stores, options) {
   };
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.0.67_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_3c89fa62c09d96ae3e3b559a96baacfd/node_modules/@harborclient/sdk/dist/components/EmptyState/index.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/EmptyState/index.js
 function variantClasses(variant) {
   if (variant === "centered") {
-    return "flex flex-1 items-center justify-center p-4 text-center text-[14px] text-muted";
+    return "flex flex-1 items-center justify-center p-4 text-center text-muted";
   }
-  return "text-[14px] text-muted";
+  return "text-muted";
 }
 function EmptyState({ children, variant = "inline", className, ...props }) {
-  return jsx("div", { ...props, className: cn("hc-empty-state text-[16px]", variantClasses(variant), className), children });
+  return jsx("div", { ...props, className: cn("hc-empty-state", variantClasses(variant), className), children });
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.0.67_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_3c89fa62c09d96ae3e3b559a96baacfd/node_modules/@harborclient/sdk/dist/components/enhanceControl.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/useDialogFocus.js
+var FOCUSABLE_SELECTOR = 'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+var inertLockCounts = /* @__PURE__ */ new WeakMap();
+function setInertLocked(element, locked) {
+  const count = inertLockCounts.get(element) ?? 0;
+  if (locked) {
+    inertLockCounts.set(element, count + 1);
+    element.inert = true;
+    return;
+  }
+  const next = count - 1;
+  if (next <= 0) {
+    inertLockCounts.delete(element);
+    element.inert = false;
+  } else {
+    inertLockCounts.set(element, next);
+  }
+}
+function lockOverlaySiblings(overlay) {
+  const parent = overlay.parentElement;
+  if (!parent)
+    return [];
+  const locked = [];
+  for (const child of parent.children) {
+    if (child === overlay)
+      continue;
+    setInertLocked(child, true);
+    locked.push(child);
+  }
+  return locked;
+}
+function unlockOverlaySiblings(siblings) {
+  for (const sibling of siblings) {
+    setInertLocked(sibling, false);
+  }
+}
+function isFocusableVisible(element) {
+  if (element.closest('[aria-hidden="true"]')) {
+    return false;
+  }
+  if (element.offsetParent !== null || getComputedStyle(element).position === "fixed") {
+    return true;
+  }
+  let parent = element.parentElement;
+  while (parent) {
+    if (getComputedStyle(parent).position === "fixed") {
+      return true;
+    }
+    parent = parent.parentElement;
+  }
+  return false;
+}
+function getFocusableElements(container) {
+  const candidates = Array.from(container.querySelectorAll(FOCUSABLE_SELECTOR));
+  return candidates.filter(isFocusableVisible);
+}
+function useDialogFocus(panelRef) {
+  useEffect(() => {
+    const panel = panelRef.current;
+    if (!panel)
+      return;
+    const inertedSiblings = lockOverlaySiblings(panel);
+    const previousFocus = document.activeElement;
+    if (!panel.contains(document.activeElement)) {
+      const focusables = getFocusableElements(panel);
+      if (focusables.length > 0) {
+        focusables[0].focus();
+      } else {
+        panel.tabIndex = -1;
+        panel.focus();
+      }
+    }
+    const handleKeyDown = (event) => {
+      if (event.key !== "Tab")
+        return;
+      const focusables = getFocusableElements(panel);
+      if (focusables.length === 0) {
+        event.preventDefault();
+        return;
+      }
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      const active = document.activeElement;
+      if (event.shiftKey) {
+        if (active === first || !panel.contains(active)) {
+          event.preventDefault();
+          last.focus();
+        }
+      } else if (active === last || !panel.contains(active)) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      unlockOverlaySiblings(inertedSiblings);
+      if (previousFocus instanceof HTMLElement && document.contains(previousFocus)) {
+        previousFocus.focus();
+      }
+    };
+  }, [panelRef]);
+}
+
+// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/enhanceControl.js
 var REACT_FRAGMENT_TYPE = Symbol.for("react.fragment");
 var FORM_CONTROL_TAGS = /* @__PURE__ */ new Set(["button", "input", "select", "textarea"]);
 function getSingleChild(node) {
@@ -10087,7 +10255,12 @@ function enhanceControl(child, options) {
   return applyAriaProps(child, options);
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.0.67_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_3c89fa62c09d96ae3e3b559a96baacfd/node_modules/@harborclient/sdk/dist/components/FormGroup/index.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/FormGroup/index.js
+function borderedWrapperClasses(bordered, layoutClasses, extra) {
+  const frame = bordered ? "p-4 border border-separator rounded-md" : "";
+  const base = `hc-form-group ${layoutClasses} ${frame}`.trim();
+  return extra ? `${base} ${extra}` : base;
+}
 function labelClasses(tone, srOnly, inline) {
   const base = "hc-form-group-label text-[18px]";
   const visibility = srOnly ? "sr-only" : "";
@@ -10098,22 +10271,22 @@ function labelClasses(tone, srOnly, inline) {
   const color2 = tone === "muted" ? "text-muted" : "font-medium text-text";
   return `${base} ${color2} ${visibility}`.trim();
 }
-function FormGroup({ label, children, htmlFor, description, error, errorId, descriptionId, layout = "stacked", labelTone = "default", srOnly = false, className, labelClassName, ...props }) {
+function FormGroup({ label, children, htmlFor, description, error, errorId, descriptionId, layout = "stacked", labelTone = "default", srOnly = false, className, labelClassName, bordered = true, ...props }) {
   const generatedId = useId();
   const controlId = htmlFor ?? generatedId;
   const extra = className ?? "";
   if (layout === "associated") {
-    const associatedClasses = labelClassName ? `hc-form-group ${labelClassName}` : "hc-form-group text-[16px] text-text";
+    const associatedClasses = labelClassName ? `hc-form-group ${labelClassName}` : "hc-form-group text-text";
     return jsx("label", { htmlFor, className: associatedClasses, children: label });
   }
   if (layout === "checkboxAdjacent") {
     const wrapperClasses2 = extra ? `hc-form-group flex items-start gap-2 ${extra}` : "hc-form-group flex items-start gap-2";
-    const adjacentLabelClasses = labelClassName ? `hc-form-group-label ${labelClassName}` : "hc-form-group-label min-w-0 flex-1 text-[16px] text-text";
+    const adjacentLabelClasses = labelClassName ? `hc-form-group-label ${labelClassName}` : "hc-form-group-label min-w-0 flex-1 text-text";
     const linkedChildren = enhanceControl(children, { id: controlId });
     return jsxs("div", { ...props, className: wrapperClasses2, children: [linkedChildren, jsx("label", { htmlFor: controlId, className: adjacentLabelClasses, children: label })] });
   }
   if (layout === "radio") {
-    const wrapperClasses2 = extra ? `hc-form-group inline-flex cursor-pointer items-center gap-1.5 text-[16px] text-text app-no-drag ${extra}` : "hc-form-group inline-flex cursor-pointer items-center gap-1.5 text-[16px] text-text app-no-drag";
+    const wrapperClasses2 = extra ? `hc-form-group inline-flex cursor-pointer items-center gap-1.5 text-text app-no-drag ${extra}` : "hc-form-group inline-flex cursor-pointer items-center gap-1.5 text-text app-no-drag";
     const linkedChildren = enhanceControl(children, { id: controlId });
     return jsxs("label", { htmlFor: controlId, className: wrapperClasses2, children: [linkedChildren, jsx("span", { className: "hc-form-group-label", children: label })] });
   }
@@ -10127,11 +10300,11 @@ function FormGroup({ label, children, htmlFor, description, error, errorId, desc
       id: controlId,
       invalid: resolvedErrorId2 != null
     });
-    const wrapperClasses2 = extra ? `hc-form-group flex flex-col gap-1 p-4 border border-separator rounded-md ${extra}` : "hc-form-group flex flex-col gap-1 p-4 border border-separator rounded-md";
+    const wrapperClasses2 = borderedWrapperClasses(bordered, "flex flex-col gap-1", extra);
     return jsxs("div", { ...props, className: wrapperClasses2, children: [jsxs("label", { htmlFor: controlId, className: "hc-form-group-label flex flex-col gap-1", children: [jsxs("span", { className: "hc-form-group-label-row flex items-center gap-2", children: [linkedChildren, jsx("span", { className: labelClasses(labelTone, srOnly, false), children: label })] }), resolvedDescriptionId2 ? jsx("p", { id: resolvedDescriptionId2, className: "hc-form-group-description m-0 pl-[26px] text-[14px] text-muted", children: description }) : null] }), resolvedErrorId2 ? jsx(FieldError, { id: resolvedErrorId2, spacing: "field", children: error }) : null] });
   }
   if (layout === "inline") {
-    const wrapperClasses2 = extra ? `hc-form-group flex min-w-0 flex-1 items-center gap-2 p-4 border border-separator rounded-md ${extra}` : "hc-form-group flex min-w-0 flex-1 items-center gap-2 p-4 border border-separator rounded-md";
+    const wrapperClasses2 = borderedWrapperClasses(bordered, "flex min-w-0 flex-1 items-center gap-2", extra);
     const linkedChildren = enhanceControl(children, { id: controlId });
     return jsxs("label", { htmlFor: controlId, className: wrapperClasses2, children: [jsx("span", { className: labelClasses(labelTone, srOnly, true), children: label }), linkedChildren] });
   }
@@ -10144,116 +10317,21 @@ function FormGroup({ label, children, htmlFor, description, error, errorId, desc
     invalid: resolvedErrorId != null,
     id: htmlFor
   });
-  const wrapperClasses = extra ? `hc-form-group flex flex-col gap-1 p-4 text-[16px] border border-separator rounded-md ${extra}` : "hc-form-group flex flex-col gap-1 p-4 text-[16px] border border-separator rounded-md";
+  const wrapperClasses = borderedWrapperClasses(bordered, "flex flex-col gap-1", extra);
   return jsxs("div", { ...props, className: wrapperClasses, children: [jsxs("label", { htmlFor, className: "hc-form-group-label flex flex-col gap-1", children: [jsx("span", { className: labelClasses(labelTone, srOnly, false), children: label }), resolvedDescriptionId ? jsx("p", { id: resolvedDescriptionId, className: "hc-form-group-description m-0 text-[14px] text-muted", children: description }) : null, control] }), resolvedErrorId ? jsx(FieldError, { id: resolvedErrorId, spacing: "field", children: error }) : null] });
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.0.67_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_3c89fa62c09d96ae3e3b559a96baacfd/node_modules/@harborclient/sdk/dist/components/useDialogFocus.js
-var FOCUSABLE_SELECTOR = 'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
-var inertLockCounts = /* @__PURE__ */ new WeakMap();
-function setInertLocked(element, locked) {
-  const count = inertLockCounts.get(element) ?? 0;
-  if (locked) {
-    inertLockCounts.set(element, count + 1);
-    element.inert = true;
-    return;
-  }
-  const next = count - 1;
-  if (next <= 0) {
-    inertLockCounts.delete(element);
-    element.inert = false;
-  } else {
-    inertLockCounts.set(element, next);
-  }
-}
-function lockOverlaySiblings(overlay) {
-  const parent = overlay.parentElement;
-  if (!parent)
-    return [];
-  const locked = [];
-  for (const child of parent.children) {
-    if (child === overlay)
-      continue;
-    setInertLocked(child, true);
-    locked.push(child);
-  }
-  return locked;
-}
-function unlockOverlaySiblings(siblings) {
-  for (const sibling of siblings) {
-    setInertLocked(sibling, false);
-  }
-}
-function getFocusableElements(container) {
-  const candidates = Array.from(container.querySelectorAll(FOCUSABLE_SELECTOR));
-  return candidates.filter((element) => {
-    if (element.closest('[aria-hidden="true"]'))
-      return false;
-    if (element.offsetParent === null && getComputedStyle(element).position !== "fixed") {
-      return false;
-    }
-    return true;
-  });
-}
-function useDialogFocus(panelRef) {
-  useEffect(() => {
-    const panel = panelRef.current;
-    if (!panel)
-      return;
-    const inertedSiblings = lockOverlaySiblings(panel);
-    const previousFocus = document.activeElement;
-    if (!panel.contains(document.activeElement)) {
-      const focusables = getFocusableElements(panel);
-      if (focusables.length > 0) {
-        focusables[0].focus();
-      } else {
-        panel.tabIndex = -1;
-        panel.focus();
-      }
-    }
-    const handleKeyDown = (event) => {
-      if (event.key !== "Tab")
-        return;
-      const focusables = getFocusableElements(panel);
-      if (focusables.length === 0) {
-        event.preventDefault();
-        return;
-      }
-      const first = focusables[0];
-      const last = focusables[focusables.length - 1];
-      const active = document.activeElement;
-      if (event.shiftKey) {
-        if (active === first || !panel.contains(active)) {
-          event.preventDefault();
-          last.focus();
-        }
-      } else if (active === last || !panel.contains(active)) {
-        event.preventDefault();
-        first.focus();
-      }
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      unlockOverlaySiblings(inertedSiblings);
-      if (previousFocus instanceof HTMLElement && document.contains(previousFocus)) {
-        previousFocus.focus();
-      }
-    };
-  }, [panelRef]);
-}
-
-// node_modules/.pnpm/@harborclient+sdk@1.0.67_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_3c89fa62c09d96ae3e3b559a96baacfd/node_modules/@harborclient/sdk/dist/components/Modal/ModalHeader.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/Modal/ModalHeader.js
 function ModalHeader({ titleId, title, description, descriptionId, headerActions, closeDisabled = false, onClose, className, ...props }) {
   return jsxs("div", { ...props, className: cn("hc-modal-header flex flex-wrap items-center gap-2 border-b border-separator px-4 py-4", className), children: [jsxs("div", { className: "hc-modal-header-content min-w-0 flex-1", children: [jsx("h2", { id: titleId, className: "hc-modal-header-title m-0 flex flex-wrap items-center gap-2 text-[17px] font-semibold text-text", children: title }), description ? jsx("p", { id: descriptionId, className: "hc-modal-header-description m-0 mt-1 text-[14px] text-muted", children: description }) : null] }), jsxs("div", { className: "hc-modal-header-actions flex flex-wrap items-center gap-2", children: [headerActions, jsx(Button, { type: "button", variant: "icon", className: "hc-modal-header-close shrink-0", "aria-label": "Close", disabled: closeDisabled, onClick: onClose, children: jsx(FaIcon, { icon: faXmark, className: "h-4 w-4" }) })] })] });
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.0.67_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_3c89fa62c09d96ae3e3b559a96baacfd/node_modules/@harborclient/sdk/dist/components/Modal/ModalFooter.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/Modal/ModalFooter.js
 function ModalFooter({ children, spaced = false, className, ...props }) {
   return jsx("div", { ...props, className: cn("hc-modal-footer flex justify-end gap-2", spaced && "mt-4", className), children });
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.0.67_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_3c89fa62c09d96ae3e3b559a96baacfd/node_modules/@harborclient/sdk/dist/components/Modal/index.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/Modal/index.js
 function Modal({ onClose, className = "w-96", overlayClassName, disableEscape = false, title, description, headerActions, closeDisabled = false, labelledBy, label, children, ...props }) {
   const panelRef = useRef(null);
   const overlayRef = useRef(null);
@@ -10275,7 +10353,7 @@ function Modal({ onClose, className = "w-96", overlayClassName, disableEscape = 
   return jsxs("div", { ref: overlayRef, ...props, className: overlayClass, children: [jsx("div", { ref: panelRef, role: "dialog", "aria-modal": "true", "aria-labelledby": labelledBy, "aria-describedby": descriptionId, "aria-label": label, className: cn("hc-modal-panel relative z-10", panelClass), onClick: (event) => event.stopPropagation(), children: title && labelledBy ? jsxs(Fragment, { children: [jsx(ModalHeader, { titleId: labelledBy, title, description, descriptionId, headerActions, closeDisabled, onClose }), jsx("div", { className: "hc-modal-body flex-1 overflow-y-auto p-4", children })] }) : children }), jsx("button", { type: "button", tabIndex: -1, className: "hc-modal-backdrop absolute inset-0 z-0 cursor-default border-none bg-transparent p-0", "aria-label": "Close dialog", onClick: onClose })] });
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.0.67_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_3c89fa62c09d96ae3e3b559a96baacfd/node_modules/@harborclient/sdk/dist/components/StatusMessage/index.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/StatusMessage/index.js
 function StatusMessage({ children, live = true, className, ...props }) {
   return jsx("p", { ...props, className: cn("hc-status-message text-[14px] text-muted", className), role: live ? "status" : void 0, "aria-live": live ? "polite" : void 0, children });
 }
@@ -10295,7 +10373,7 @@ function logLoadTestRequest(hc, payload) {
   void host.logRequestToConsole(payload);
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.0.67_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_3c89fa62c09d96ae3e3b559a96baacfd/node_modules/@harborclient/sdk/dist/storage/validate.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/storage/validate.js
 function isRecord(value) {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
@@ -10761,7 +10839,7 @@ function createHostSender(hc) {
   };
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.0.67_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_3c89fa62c09d96ae3e3b559a96baacfd/node_modules/@harborclient/sdk/dist/http/substitute.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/http/substitute.js
 function substituteVariables(text2, runtimeVars) {
   return substituteVariablesFromMap(text2, runtimeVars);
 }
@@ -10784,7 +10862,7 @@ function substituteKeyValueRows(rows, runtimeVars) {
   }));
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.0.67_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_3c89fa62c09d96ae3e3b559a96baacfd/node_modules/@harborclient/sdk/dist/http/resolveRequest.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/http/resolveRequest.js
 function hasUnsafeHeaderFieldChars(value) {
   for (let index2 = 0; index2 < value.length; index2 += 1) {
     const code = value.charCodeAt(index2);
@@ -24476,7 +24554,7 @@ var TimeSeriesScale = class extends TimeScale {
   }
 };
 
-// node_modules/.pnpm/@harborclient+sdk@1.0.67_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_3c89fa62c09d96ae3e3b559a96baacfd/node_modules/@harborclient/sdk/dist/runtime-utils.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/runtime-utils.js
 var LOG_LEVEL_RANK = {
   debug: 0,
   info: 1,
@@ -25218,60 +25296,61 @@ function StatusBarHost({ hc }) {
 function activate(hc) {
   void initStore(hc);
   void initDatabase(hc);
-  hc.subscriptions.push({ dispose: disposeStore });
-  hc.subscriptions.push(
-    hc.ui.registerRequestTab({
-      id: "load-tester",
-      title: "Load Tester",
-      order: 55,
-      Component: ({ context }) => /* @__PURE__ */ jsx(LoadTesterTab, { hc, context })
-    }),
-    hc.ui.registerResponseTab({
-      id: "load-testing",
-      title: "Load Testing",
-      order: 55,
-      // Host supports `noResponse`; cast until SDK types include it.
-      when: "noResponse",
-      Component: ({ context }) => /* @__PURE__ */ jsx(ResponseLoadTab, { hc, context })
-    }),
-    hc.ui.registerStatusBarItem({
-      id: "modal-host",
-      alignment: "right",
-      order: 999,
-      Component: () => /* @__PURE__ */ jsx(StatusBarHost, { hc })
-    }),
-    hc.commands.register("load-test.collection", (payload) => {
-      if (!payload || typeof payload !== "object") {
-        throw new Error("Load Test requires a collection or folder target.");
-      }
-      const { collectionId, folderId } = payload;
-      if (typeof collectionId !== "number") {
-        throw new Error("Load Test requires a numeric collectionId.");
-      }
-      openCollectionModal({
-        collectionId,
-        folderId: typeof folderId === "number" ? folderId : null
-      });
-    }),
-    hc.ui.registerContextMenuItem({
-      id: "load-tester",
-      title: "Load Test",
-      command: "load-test.collection",
-      when: ["collection", "folder"],
-      group: "run",
-      order: 10
-    })
-  );
+  hc.ui.registerRequestTab({
+    id: "load-tester",
+    title: "Load Tester",
+    order: 55,
+    Component: ({ context }) => /* @__PURE__ */ jsx(LoadTesterTab, { hc, context })
+  });
+  hc.ui.registerResponseTab({
+    id: "load-testing",
+    title: "Load Testing",
+    order: 55,
+    // Host supports `noResponse`; cast until SDK types include it.
+    when: "noResponse",
+    Component: ({ context }) => /* @__PURE__ */ jsx(ResponseLoadTab, { hc, context })
+  });
+  hc.ui.registerStatusBarItem({
+    id: "modal-host",
+    alignment: "right",
+    order: 999,
+    Component: () => /* @__PURE__ */ jsx(StatusBarHost, { hc })
+  });
+  hc.commands.register("load-test.collection", (payload) => {
+    if (!payload || typeof payload !== "object") {
+      throw new Error("Load Test requires a collection or folder target.");
+    }
+    const { collectionId, folderId } = payload;
+    if (typeof collectionId !== "number") {
+      throw new Error("Load Test requires a numeric collectionId.");
+    }
+    openCollectionModal({
+      collectionId,
+      folderId: typeof folderId === "number" ? folderId : null
+    });
+  });
+  hc.ui.registerContextMenuItem({
+    id: "load-tester",
+    title: "Load Test",
+    command: "load-test.collection",
+    when: ["collection", "folder"],
+    group: "run",
+    order: 10
+  });
+}
+function deactivate() {
+  disposeStore();
 }
 export {
-  activate
+  activate,
+  deactivate
 };
 /*! Bundled license information:
 
 @fortawesome/free-solid-svg-icons/index.mjs:
 @fortawesome/fontawesome-svg-core/index.mjs:
   (*!
-   * Font Awesome Free 7.3.0 by @fontawesome - https://fontawesome.com
+   * Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com
    * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
    * Copyright 2026 Fonticons, Inc.
    *)
