@@ -2,10 +2,14 @@
   "id": "com.harborclient.plugins.load-tester",
   "name": "Load Tester",
   "author": "HarborClient",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "summary": "Fire repeated requests against an endpoint or collection and chart latency percentiles, throughput, and error rate.",
   "description": "README.md",
-  "categories": ["testing", "collections", "requests"],
+  "categories": [
+    "testing",
+    "collections",
+    "requests"
+  ],
   "screenshots": [
     "https://raw.githubusercontent.com/harborclient/plugin-load-tester/main/screenshot.png"
   ],
@@ -13,7 +17,13 @@
     "harborclient": ">=2.0.0"
   },
   "renderer": "dist/renderer.js",
-  "permissions": ["ui", "storage", "database", "filesystem:pick", "network"],
+  "permissions": [
+    "ui",
+    "storage",
+    "database",
+    "filesystem:pick",
+    "network"
+  ],
   "contributes": {
     "requestTabs": [
       {
@@ -44,7 +54,10 @@
         "id": "load-tester",
         "title": "Load Tester",
         "command": "load-test.collection",
-        "when": ["collection", "folder"]
+        "when": [
+          "collection",
+          "folder"
+        ]
       }
     ]
   }
