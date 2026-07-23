@@ -6,7 +6,7 @@
   "files": [
     {
       "path": ".eslintcache",
-      "sha256": "b2477c9bfc26b8472a48311e1ffc2a414335097c51e10bd51310fe7287e62e4d"
+      "sha256": "f3866b1109a1dec9484b0683973f0b21f712a528bdb8f54ca5347e4b35fbfa80"
     },
     {
       "path": ".gitignore",
@@ -22,7 +22,7 @@
     },
     {
       "path": "dist/renderer.js",
-      "sha256": "9dfcb99583e5d69c13cb6f05c8a811b69d7517207af3b6675ff738ff9c004ea3"
+      "sha256": "5c2640e94aed37d1671095e4037433767d86a4df2faee20c1d1baaaccf281f37"
     },
     {
       "path": "eslint.config.mjs",
@@ -30,7 +30,7 @@
     },
     {
       "path": "manifest.json",
-      "sha256": "a623319521565ec5a1758d5480ef0414b3c5274d2f74135d06df7840912e9f87"
+      "sha256": "268e783ee522b79553d1f8a7b3900223d02faa5de52e0c76f3f80aec2bcd982e"
     },
     {
       "path": "package.json",
@@ -42,7 +42,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "40e4062fe0edcc94ac392bc47b158e39437b2dfa9631a0961e5cb106dca0342b"
+      "sha256": "288e8ca3f0ae9e28d8dc4702447e773a84e571893c9250baa93e0d0af1713113"
     },
     {
       "path": "screenshot.png",
@@ -118,11 +118,11 @@
     },
     {
       "path": "src/loadEngine.test.ts",
-      "sha256": "79f5aa1ce8ca566254543cea69d6c1dadff31449ac21605da043c2f0ea611ee7"
+      "sha256": "11cd285dba9e2030b217645571f17dec2421a89264e1a7a4352177a8a82a7778"
     },
     {
       "path": "src/loadEngine.ts",
-      "sha256": "2fd8a5555eeffacef44ea7459e0766b42353a1e77cfcff3ab463e3ce6feea2d5"
+      "sha256": "7d2b5ca6687b9765efa4284de251bbcb26a8950d875094800f9943861209a5c5"
     },
     {
       "path": "src/LoadResultsView.tsx",
@@ -154,7 +154,7 @@
     },
     {
       "path": "src/sendViaHost.ts",
-      "sha256": "6128b9be03aeecaf65e8245d046c3bf463393ba8bad15503136c11f4140fe32e"
+      "sha256": "c3b3e0dda7bd193f0e9967382ed69f7f6c506a2b722f5098f8fb27356a4b9bfd"
     },
     {
       "path": "src/StatusBarHost.tsx",
@@ -178,5 +178,5 @@
     }
   ],
   "keyId": "com.harborclient.plugins.load-tester",
-  "signature": "gZyDQbksqmTpnfvWRJeVbbvM4LcjeOYi7jX0nAZL1UjyygJnvfmy5nAATGHptXDjuSadVzrtEWHFcJoCqtILAw=="
+  "signature": "wdjeWVBFcrVp1pq5blN5S+DNOl5vKa0OpczHDC2+Asogbmoe67pNOxEC839ck95sMI2FRc0Jc4gDwXw2865LCA=="
 }

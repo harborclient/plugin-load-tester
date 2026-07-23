@@ -38,7 +38,7 @@ async function initDatabase(hc) {
   }
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/runtime/reactHost.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.32_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_5d0a3fe23267ed084f37da459d11d659/node_modules/@harborclient/sdk/dist/runtime/reactHost.js
 var HOST_REACT_GLOBAL_KEY = "__HARBORCLIENT_HOST_REACT__";
 var HOST_REACT_DOM_GLOBAL_KEY = "__HARBORCLIENT_HOST_REACT_DOM__";
 var hostReact = null;
@@ -86,7 +86,7 @@ function requireHostReactDom() {
   return hostReactDom;
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/runtime/react.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.32_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_5d0a3fe23267ed084f37da459d11d659/node_modules/@harborclient/sdk/dist/runtime/react.js
 function hook(name) {
   const react = requireHostReact();
   const fn = react[name];
@@ -223,7 +223,7 @@ function useCollectionModalState() {
   return useSyncExternalStore(subscribeModal, getModalSnapshot, getModalSnapshot);
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/runtime/jsx-runtime.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.32_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_5d0a3fe23267ed084f37da459d11d659/node_modules/@harborclient/sdk/dist/runtime/jsx-runtime.js
 var Fragment = Symbol.for("@harborclient/sdk.Fragment");
 function build(type, props, key) {
   const react = requireHostReact();
@@ -3506,12 +3506,12 @@ var getDefaultConfig = () => {
 };
 var twMerge = /* @__PURE__ */ createTailwindMerge(getDefaultConfig);
 
-// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/utils.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.32_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_5d0a3fe23267ed084f37da459d11d659/node_modules/@harborclient/sdk/dist/components/utils.js
 function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/FieldError/index.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.32_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_5d0a3fe23267ed084f37da459d11d659/node_modules/@harborclient/sdk/dist/components/FieldError/index.js
 function spacingClasses(spacing) {
   switch (spacing) {
     case "section":
@@ -3529,7 +3529,7 @@ function FieldError({ children, spacing = "field", roleAlert = true, className, 
   return jsx("p", { ...props, className: cn("hc-field-error text-[14px] text-danger", spacingClasses(spacing), className), role: roleAlert ? "alert" : void 0, children });
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/Button/index.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.32_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_5d0a3fe23267ed084f37da459d11d659/node_modules/@harborclient/sdk/dist/components/Button/index.js
 var BUTTON_BASE = "inline-flex cursor-pointer items-center rounded-full app-no-drag";
 var VARIANT_CLASSES = {
   primary: cn(BUTTON_BASE, "min-h-[32px] justify-center border border-transparent bg-accent px-3 py-1 text-[15px] font-medium text-white shadow-sm hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"),
@@ -3544,7 +3544,7 @@ function Button({ variant = "primary", className, type = "button", innerRef, ...
   return jsx("button", { ref: innerRef, type, className: cn("hc-button", VARIANT_CLASSES[variant], className), ...props });
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/forms/classes.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.32_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_5d0a3fe23267ed084f37da459d11d659/node_modules/@harborclient/sdk/dist/components/forms/classes.js
 var field = "rounded-lg border border-separator bg-field px-2.5 py-1.5 text-text app-no-drag";
 var surfaceField = "w-full rounded-lg border border-separator bg-field px-3 py-2.5 text-[15px] text-text";
 function mergeFieldClasses(variant, className, rootClass) {
@@ -3552,18 +3552,18 @@ function mergeFieldClasses(variant, className, rootClass) {
   return result === "" ? void 0 : result;
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/forms/Input.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.32_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_5d0a3fe23267ed084f37da459d11d659/node_modules/@harborclient/sdk/dist/components/forms/Input.js
 function Input({ ref, variant = "control", type, className, ...props }) {
   const resolvedVariant = type === "checkbox" || type === "radio" ? "plain" : variant;
   return jsx("input", { ref, type, className: mergeFieldClasses(resolvedVariant, className, "hc-input"), ...props });
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/runtime/react-dom.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.32_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_5d0a3fe23267ed084f37da459d11d659/node_modules/@harborclient/sdk/dist/runtime/react-dom.js
 function createPortal(children, container, key) {
   return requireHostReactDom().createPortal(children, container, key);
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/portalToBody.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.32_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_5d0a3fe23267ed084f37da459d11d659/node_modules/@harborclient/sdk/dist/components/portalToBody.js
 function portalToBody(node) {
   if (typeof document === "undefined") {
     throw new Error("portalToBody requires a DOM document");
@@ -7465,7 +7465,7 @@ var FontAwesomeIcon = React.forwardRef((props, ref) => {
 FontAwesomeIcon.displayName = "FontAwesomeIcon";
 var DEFAULT_CLASSNAMES = `${LAYER_CLASSES.default} ${STYLE_CLASSES.fixedWidth}`;
 
-// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/FaIcon/index.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.32_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_5d0a3fe23267ed084f37da459d11d659/node_modules/@harborclient/sdk/dist/components/FaIcon/index.js
 function FaIcon({ icon: icon3, className = "h-3.5 w-3.5", title, ...props }) {
   return createElement(FontAwesomeIcon, {
     ...props,
@@ -7476,7 +7476,7 @@ function FaIcon({ icon: icon3, className = "h-3.5 w-3.5", title, ...props }) {
   });
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/Spinner/index.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.32_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_5d0a3fe23267ed084f37da459d11d659/node_modules/@harborclient/sdk/dist/components/Spinner/index.js
 function sizeClasses(size) {
   return size === "sm" ? "h-3 w-3" : "h-4 w-4";
 }
@@ -9366,7 +9366,7 @@ var e3 = { airline: { airline: [{ name: `Aegean Airlines`, iataCode: `A3` }, { n
 // node_modules/.pnpm/@faker-js+faker@10.5.0/node_modules/@faker-js/faker/dist/locale/en.js
 var r4 = new yt({ locale: [e3, Ct] });
 
-// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/variables/dynamic.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.32_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_5d0a3fe23267ed084f37da459d11d659/node_modules/@harborclient/sdk/dist/variables/dynamic.js
 function categoryImageUrl(category) {
   return r4.image.urlLoremFlickr({ category });
 }
@@ -9870,7 +9870,7 @@ function resolveDynamicVariable(key) {
 }
 var DYNAMIC_VARIABLE_NAMES = Object.keys(DYNAMIC_VARIABLES).sort();
 
-// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/variables/filters.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.32_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_5d0a3fe23267ed084f37da459d11d659/node_modules/@harborclient/sdk/dist/variables/filters.js
 var FILTERS = {
   upper: (value) => value.toUpperCase(),
   lower: (value) => value.toLowerCase(),
@@ -9905,7 +9905,7 @@ function applyFilters(value, filters) {
   return current;
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/variables/tokens.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.32_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_5d0a3fe23267ed084f37da459d11d659/node_modules/@harborclient/sdk/dist/variables/tokens.js
 var VARIABLE_NAME_CHARS = "\\w$.-";
 var VARIABLE_TOKEN_PATTERN = new RegExp(`\\{\\{\\s*([${VARIABLE_NAME_CHARS}]+)(\\s*\\|\\s*[${VARIABLE_NAME_CHARS}]+)*\\s*\\}\\}`, "g");
 var VALID_NAME_PATTERN = new RegExp(`^[${VARIABLE_NAME_CHARS}]+$`);
@@ -9993,7 +9993,7 @@ function substituteVariablesFromMap(text2, runtimeVars) {
   return substituteWithResolver(text2, (key) => runtimeVars[key]);
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/runtime/store.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.32_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_5d0a3fe23267ed084f37da459d11d659/node_modules/@harborclient/sdk/dist/runtime/store.js
 function createExternalStore(initial2) {
   let state = initial2;
   const listeners2 = /* @__PURE__ */ new Set();
@@ -10078,7 +10078,7 @@ function syncOnWindowFocus(stores, options) {
   };
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/EmptyState/index.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.32_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_5d0a3fe23267ed084f37da459d11d659/node_modules/@harborclient/sdk/dist/components/EmptyState/index.js
 function variantClasses(variant) {
   if (variant === "centered") {
     return "flex flex-1 items-center justify-center p-4 text-center text-muted";
@@ -10089,7 +10089,7 @@ function EmptyState({ children, variant = "inline", className, ...props }) {
   return jsx("div", { ...props, className: cn("hc-empty-state", variantClasses(variant), className), children });
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/useDialogFocus.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.32_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_5d0a3fe23267ed084f37da459d11d659/node_modules/@harborclient/sdk/dist/components/useDialogFocus.js
 var FOCUSABLE_SELECTOR = 'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 var inertLockCounts = /* @__PURE__ */ new WeakMap();
 function setInertLocked(element, locked) {
@@ -10193,7 +10193,7 @@ function useDialogFocus(panelRef) {
   }, [panelRef]);
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/enhanceControl.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.32_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_5d0a3fe23267ed084f37da459d11d659/node_modules/@harborclient/sdk/dist/components/enhanceControl.js
 var REACT_FRAGMENT_TYPE = Symbol.for("react.fragment");
 var FORM_CONTROL_TAGS = /* @__PURE__ */ new Set(["button", "input", "select", "textarea"]);
 function getSingleChild(node) {
@@ -10255,7 +10255,7 @@ function enhanceControl(child, options) {
   return applyAriaProps(child, options);
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/FormGroup/index.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.32_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_5d0a3fe23267ed084f37da459d11d659/node_modules/@harborclient/sdk/dist/components/FormGroup/index.js
 function borderedWrapperClasses(bordered, layoutClasses, extra) {
   const frame = bordered ? "p-4 border border-separator rounded-md" : "";
   const base = `hc-form-group ${layoutClasses} ${frame}`.trim();
@@ -10321,17 +10321,17 @@ function FormGroup({ label, children, htmlFor, description, error, errorId, desc
   return jsxs("div", { ...props, className: wrapperClasses, children: [jsxs("label", { htmlFor, className: "hc-form-group-label flex flex-col gap-1", children: [jsx("span", { className: labelClasses(labelTone, srOnly, false), children: label }), resolvedDescriptionId ? jsx("p", { id: resolvedDescriptionId, className: "hc-form-group-description m-0 text-[14px] text-muted", children: description }) : null, control] }), resolvedErrorId ? jsx(FieldError, { id: resolvedErrorId, spacing: "field", children: error }) : null] });
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/Modal/ModalHeader.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.32_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_5d0a3fe23267ed084f37da459d11d659/node_modules/@harborclient/sdk/dist/components/Modal/ModalHeader.js
 function ModalHeader({ titleId, title, description, descriptionId, headerActions, closeDisabled = false, onClose, className, ...props }) {
   return jsxs("div", { ...props, className: cn("hc-modal-header flex flex-wrap items-center gap-2 border-b border-separator px-4 py-4", className), children: [jsxs("div", { className: "hc-modal-header-content min-w-0 flex-1", children: [jsx("h2", { id: titleId, className: "hc-modal-header-title m-0 flex flex-wrap items-center gap-2 text-[17px] font-semibold text-text", children: title }), description ? jsx("p", { id: descriptionId, className: "hc-modal-header-description m-0 mt-1 text-[14px] text-muted", children: description }) : null] }), jsxs("div", { className: "hc-modal-header-actions flex flex-wrap items-center gap-2", children: [headerActions, jsx(Button, { type: "button", variant: "icon", className: "hc-modal-header-close shrink-0", "aria-label": "Close", disabled: closeDisabled, onClick: onClose, children: jsx(FaIcon, { icon: faXmark, className: "h-4 w-4" }) })] })] });
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/Modal/ModalFooter.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.32_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_5d0a3fe23267ed084f37da459d11d659/node_modules/@harborclient/sdk/dist/components/Modal/ModalFooter.js
 function ModalFooter({ children, spaced = false, className, ...props }) {
   return jsx("div", { ...props, className: cn("hc-modal-footer flex justify-end gap-2", spaced && "mt-4", className), children });
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/Modal/index.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.32_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_5d0a3fe23267ed084f37da459d11d659/node_modules/@harborclient/sdk/dist/components/Modal/index.js
 function Modal({ onClose, className = "w-96", overlayClassName, disableEscape = false, title, description, headerActions, closeDisabled = false, labelledBy, label, children, ...props }) {
   const panelRef = useRef(null);
   const overlayRef = useRef(null);
@@ -10353,7 +10353,7 @@ function Modal({ onClose, className = "w-96", overlayClassName, disableEscape = 
   return jsxs("div", { ref: overlayRef, ...props, className: overlayClass, children: [jsx("div", { ref: panelRef, role: "dialog", "aria-modal": "true", "aria-labelledby": labelledBy, "aria-describedby": descriptionId, "aria-label": label, className: cn("hc-modal-panel relative z-10", panelClass), onClick: (event) => event.stopPropagation(), children: title && labelledBy ? jsxs(Fragment, { children: [jsx(ModalHeader, { titleId: labelledBy, title, description, descriptionId, headerActions, closeDisabled, onClose }), jsx("div", { className: "hc-modal-body flex-1 overflow-y-auto p-4", children })] }) : children }), jsx("button", { type: "button", tabIndex: -1, className: "hc-modal-backdrop absolute inset-0 z-0 cursor-default border-none bg-transparent p-0", "aria-label": "Close dialog", onClick: onClose })] });
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/components/StatusMessage/index.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.32_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_5d0a3fe23267ed084f37da459d11d659/node_modules/@harborclient/sdk/dist/components/StatusMessage/index.js
 function StatusMessage({ children, live = true, className, ...props }) {
   return jsx("p", { ...props, className: cn("hc-status-message text-[14px] text-muted", className), role: live ? "status" : void 0, "aria-live": live ? "polite" : void 0, children });
 }
@@ -10373,7 +10373,7 @@ function logLoadTestRequest(hc, payload) {
   void host.logRequestToConsole(payload);
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/storage/validate.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.32_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_5d0a3fe23267ed084f37da459d11d659/node_modules/@harborclient/sdk/dist/storage/validate.js
 function isRecord(value) {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
@@ -10744,6 +10744,9 @@ function errorResult(message) {
     error: message
   };
 }
+function isFatalHostSendError(message) {
+  return message.includes("lacks permission: network") || message.includes("cannot make network requests") || message.includes("requires the network permission") || message.includes("until network access is granted");
+}
 async function executeRequest(target, options, signal, send) {
   let result;
   try {
@@ -10754,6 +10757,9 @@ async function executeRequest(target, options, signal, send) {
     }
   } catch (error) {
     const message = error instanceof Error ? error.name === "AbortError" ? "Request timed out or was aborted" : error.message : String(error);
+    if (isFatalHostSendError(message)) {
+      throw error instanceof Error ? error : new Error(message);
+    }
     result = errorResult(message);
   }
   const sample2 = {
@@ -10820,6 +10826,23 @@ function getHttpSendHost(hc) {
   }
   return host;
 }
+function rewriteHostSendError(error) {
+  const message = error instanceof Error ? error.message : String(error);
+  if (!isFatalHostSendError(message)) {
+    return error;
+  }
+  if (message.includes("lacks permission: network")) {
+    return new Error(
+      'Load Tester requires the network permission. Reinstall or update the plugin so its manifest declares "network".'
+    );
+  }
+  if (message.includes("cannot make network requests")) {
+    return new Error(
+      'Load Tester cannot send requests until network access is granted. Enable "Allow script network requests" in Settings \u2192 General, or allow this plugin during install.'
+    );
+  }
+  return error instanceof Error ? error : new Error(message);
+}
 function createHostSender(hc) {
   const host = getHttpSendHost(hc);
   return async (target) => {
@@ -10828,18 +10851,22 @@ function createHostSender(hc) {
       value,
       enabled: true
     }));
-    return host.sendHttpRequest({
-      method: target.method.toUpperCase(),
-      url: target.url,
-      headers,
-      params: [],
-      body: target.body ?? "",
-      bodyType: target.bodyType ?? (target.body?.trim() ? "text" : "none")
-    });
+    try {
+      return await host.sendHttpRequest({
+        method: target.method.toUpperCase(),
+        url: target.url,
+        headers,
+        params: [],
+        body: target.body ?? "",
+        bodyType: target.bodyType ?? (target.body?.trim() ? "text" : "none")
+      });
+    } catch (error) {
+      throw rewriteHostSendError(error);
+    }
   };
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/http/substitute.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.32_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_5d0a3fe23267ed084f37da459d11d659/node_modules/@harborclient/sdk/dist/http/substitute.js
 function substituteVariables(text2, runtimeVars) {
   return substituteVariablesFromMap(text2, runtimeVars);
 }
@@ -10862,7 +10889,7 @@ function substituteKeyValueRows(rows, runtimeVars) {
   }));
 }
 
-// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/http/resolveRequest.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.32_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_5d0a3fe23267ed084f37da459d11d659/node_modules/@harborclient/sdk/dist/http/resolveRequest.js
 function hasUnsafeHeaderFieldChars(value) {
   for (let index2 = 0; index2 < value.length; index2 += 1) {
     const code = value.charCodeAt(index2);
@@ -24554,7 +24581,7 @@ var TimeSeriesScale = class extends TimeScale {
   }
 };
 
-// node_modules/.pnpm/@harborclient+sdk@1.1.30_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_f5a921e594ac8a9fdb35874fc7795fe3/node_modules/@harborclient/sdk/dist/runtime-utils.js
+// node_modules/.pnpm/@harborclient+sdk@1.1.32_@babel+runtime@8.0.0_@codemirror+search@6.7.1_@codemirror+them_5d0a3fe23267ed084f37da459d11d659/node_modules/@harborclient/sdk/dist/runtime-utils.js
 var LOG_LEVEL_RANK = {
   debug: 0,
   info: 1,

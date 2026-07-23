@@ -1,5 +1,6 @@
 import type { PluginContext } from '@harborclient/sdk';
 import type { HostSendResult, LoadSender } from './loadEngine';
+import { isFatalHostSendError } from './loadEngine';
 import type { LoadTarget } from './types';
 
 /**
@@ -46,6 +47,33 @@ function getHttpSendHost(hc: PluginContext): HttpSendHostApi {
 }
 
 /**
+ * Rewrites host permission/network gate failures into a clear load-test error.
+ *
+ * @param error - Rejection from {@link HttpSendHostApi.sendHttpRequest}.
+ * @returns Original error, or a rewritten Error for fatal host gates.
+ */
+export function rewriteHostSendError(error: unknown): unknown {
+  const message = error instanceof Error ? error.message : String(error);
+  if (!isFatalHostSendError(message)) {
+    return error;
+  }
+
+  if (message.includes('lacks permission: network')) {
+    return new Error(
+      'Load Tester requires the network permission. Reinstall or update the plugin so its manifest declares "network".'
+    );
+  }
+
+  if (message.includes('cannot make network requests')) {
+    return new Error(
+      'Load Tester cannot send requests until network access is granted. Enable "Allow script network requests" in Settings → General, or allow this plugin during install.'
+    );
+  }
+
+  return error instanceof Error ? error : new Error(message);
+}
+
+/**
  * Builds a load sender that routes each request through the host main process,
  * bypassing the renderer CORS restrictions that block direct `fetch`.
  *
@@ -66,13 +94,17 @@ export function createHostSender(hc: PluginContext): LoadSender {
       enabled: true
     }));
 
-    return host.sendHttpRequest({
-      method: target.method.toUpperCase(),
-      url: target.url,
-      headers,
-      params: [],
-      body: target.body ?? '',
-      bodyType: target.bodyType ?? (target.body?.trim() ? 'text' : 'none')
-    });
+    try {
+      return await host.sendHttpRequest({
+        method: target.method.toUpperCase(),
+        url: target.url,
+        headers,
+        params: [],
+        body: target.body ?? '',
+        bodyType: target.bodyType ?? (target.body?.trim() ? 'text' : 'none')
+      });
+    } catch (error) {
+      throw rewriteHostSendError(error);
+    }
   };
 }

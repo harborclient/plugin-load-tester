@@ -178,6 +178,24 @@ function errorResult(message: string): HostSendResult {
 }
 
 /**
+ * Returns true when a host send failure should abort the whole load test run
+ * instead of recording a per-request error sample.
+ *
+ * Permission and network-gate failures would otherwise make every sample fail
+ * instantly and look like a skipped run.
+ *
+ * @param message - Error message from the host sender or thrown Error.
+ */
+export function isFatalHostSendError(message: string): boolean {
+  return (
+    message.includes('lacks permission: network') ||
+    message.includes('cannot make network requests') ||
+    message.includes('requires the network permission') ||
+    message.includes('until network access is granted')
+  );
+}
+
+/**
  * Executes one HTTP request through the injected sender and records timing.
  *
  * The sender routes through the host main process, so requests are not subject
@@ -187,6 +205,7 @@ function errorResult(message: string): HostSendResult {
  * @param options - Load test configuration.
  * @param signal - Abort signal for the run.
  * @param send - Sender performing the request via the host main process.
+ * @throws When the host rejects the send for a fatal permission/network gate.
  */
 async function executeRequest(
   target: LoadTarget,
@@ -208,6 +227,9 @@ async function executeRequest(
           ? 'Request timed out or was aborted'
           : error.message
         : String(error);
+    if (isFatalHostSendError(message)) {
+      throw error instanceof Error ? error : new Error(message);
+    }
     result = errorResult(message);
   }
 

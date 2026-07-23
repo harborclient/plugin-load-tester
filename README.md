@@ -4,7 +4,6 @@ HarborClient plugin that drives repeated HTTP requests against the active reques
 
 ![Screenshot](screenshot.png)
 
-
 ## Features
 
 - **Load Tester** request tab — configure total requests, concurrency, timeout, delay, and keep-alive preference, then run a load test for the open request.
@@ -14,11 +13,19 @@ HarborClient plugin that drives repeated HTTP requests against the active reques
 ## Permissions
 
 - `ui` — request/response tabs, status bar modal host, and context menu action
+- `storage` — persist load test results and progress across sessions
 - `database` — optional plugin database schema for future run history
+- `filesystem:pick` — export load test reports via a save dialog
+- `network` — send load test requests through HarborClient’s main-process HTTP pipeline
 
-## CORS note
+### Network access
 
-Load tests execute in the renderer with `fetch`. Cross-origin targets must allow CORS (or use localhost). This is the only send path available to plugins today.
+HarborClient also requires a runtime grant before `network` plugins can send:
+
+1. Approve network access when installing or updating this plugin, **or**
+2. Enable **Allow script network requests** in **Settings → General**.
+
+Without that grant, every request fails immediately and the run finishes in milliseconds.
 
 ## Development
 

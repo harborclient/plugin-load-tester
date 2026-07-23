@@ -72,4 +72,30 @@ describe('runLoadTest', () => {
     expect(result.samples).toHaveLength(4);
     expect(result.success).toBe(4);
   });
+
+  it('aborts the run when the host rejects for a missing network permission', async () => {
+    const sendMock = vi.fn(async () => {
+      throw new Error('Plugin com.harborclient.plugins.load-tester lacks permission: network');
+    });
+
+    const targets: LoadTarget[] = [
+      {
+        name: 'GET https://example.test',
+        method: 'GET',
+        url: 'https://example.test',
+        headers: {},
+        body: ''
+      }
+    ];
+
+    await expect(
+      runLoadTest(
+        targets,
+        { count: 10, concurrency: 2, timeoutMs: 5000, delayMs: 0, keepAlive: true },
+        { send: sendMock }
+      )
+    ).rejects.toThrow(/lacks permission: network/);
+
+    expect(sendMock.mock.calls.length).toBeLessThan(10);
+  });
 });
